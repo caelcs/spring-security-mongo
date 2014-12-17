@@ -1,0 +1,148 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'signing'
+apply plugin: 'maven'
+apply plugin: 'pl.allegro.tech.build.axion-release'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("pl.allegro.tech.build:axion-release-plugin:${axionReleasePluginVersion}")
+    }
+}
+
+scmVersion {
+    tag {
+        prefix = 'RELEASE'
+    }
+}
+
+group = 'uk.co.caeldev'
+version = scmVersion.version
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+jar {
+    archivesBaseName = rootProject.name
+    group = group
+    version = version
+    manifest {
+        attributes 'Implementation-Title': 'Spring Security Mongo',
+                'Implementation-Version': version,
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                'Built-Gradle': gradle.gradleVersion
+    }
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    sign configurations.archives
+    required = { gradle.taskGraph.hasTask("uploadArchives") && !version.endsWith("SNAPSHOT") }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                authentication(userName: "${ossrhUsername}", password: "${ossrhPassword}")
+            }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: "${ossrhUsername}", password: "${ossrhPassword}")
+            }
+
+            //repository(url: "/Users/me/.m2/repository")
+
+            pom.project {
+
+                parent {
+                  groupId 'org.springframework.boot'
+                  artifactId 'spring-boot-starter-parent'
+                  version "${springBootVersion}"
+                }
+
+                name 'Spring Security Mongo'
+                packaging "jar"
+
+                description "A Commons Library to provide the repositories for mongo db"
+                url "https://github.com/caelwinner/spring-security-mongo"
+
+                scm {
+                    url "https://github.com/caelwinner/spring-security-mongo.git"
+                    connection "https://github.com/caelwinner/spring-security-mongo.git"
+                    developerConnection "https://github.com/caelwinner/spring-security-mongo.git"
+                }
+
+                licenses {
+                    license {
+                        name "MIT"
+                        url "http://opensource.org/licenses/MIT"
+                        distribution "repo"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id "caelwinner"
+                        name "Adolfo Custidiano"
+                        email "adolfoecs@gmail.com"
+                    }
+                }
+            }
+        }
+    }
+}
+
+configurations {
+    compile.exclude(group: 'org.springframework.boot', module: 'spring-boot-starter-logging')
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}")
+    compile("com.google.guava:guava:${guavaVersion}")
+    compile("com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}")
+    compile("joda-time:joda-time:${jodaTimeVersion}")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.assertj:assertj-core:${assertjCoreVersion}")
+    testCompile("uk.org.fyodor:fyodor-core:${fyodorVersion}")
+    testCompile("uk.org.fyodor:fyodor-junit:${fyodorVersion}")
+    testCompile("uk.org.fyodor:fyodor-jodatime:${fyodorVersion}")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = rootGradleVersion
+}
