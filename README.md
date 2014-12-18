@@ -18,6 +18,6 @@ Add as dependency to your project
 <dependency>
     <groupId>uk.co.caeldev</groupId>
     <artifactId>spring-security-mongo</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
