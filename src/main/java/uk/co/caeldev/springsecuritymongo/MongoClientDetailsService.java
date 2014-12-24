@@ -2,9 +2,11 @@ package uk.co.caeldev.springsecuritymongo;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
+import org.springframework.stereotype.Component;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsRepository;
 import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
 
@@ -15,12 +17,14 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newHashSet;
 
+@Component
 public class MongoClientDetailsService implements ClientDetailsService, ClientRegistrationService {
 
     private final MongoClientDetailsRepository mongoClientDetailsRepository;
 
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public MongoClientDetailsService(final MongoClientDetailsRepository mongoClientDetailsRepository,
                                      final PasswordEncoder passwordEncoder) {
         this.mongoClientDetailsRepository = mongoClientDetailsRepository;
