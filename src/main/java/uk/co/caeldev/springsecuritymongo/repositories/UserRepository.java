@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import uk.co.caeldev.springsecuritymongo.domain.User;
 
-@Repository
 public interface UserRepository extends MongoRepository<UserDetails, String>, UserRepositoryBase {
 
     @Query(value = "{ 'username' : ?0 }")

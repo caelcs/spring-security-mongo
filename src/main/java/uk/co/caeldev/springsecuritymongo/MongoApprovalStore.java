@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.approval.Approval;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoApprovalRepository;
 
