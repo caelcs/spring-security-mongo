@@ -25,15 +25,15 @@ public class MongoUserDetailsManager implements UserDetailsManager {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
-    private AuthenticationManager authenticationManager;
-    private SecurityContextService securityContextService;
 
+    private AuthenticationManager authenticationManager;
+
+    private SecurityContextService securityContextService;
+    
     @Autowired
     public MongoUserDetailsManager(final UserRepository userRepository,
-                                   final AuthenticationManager authenticationManager,
                                    final SecurityContextService securityContextService) {
         this.userRepository = userRepository;
-        this.authenticationManager = authenticationManager;
         this.securityContextService = securityContextService;
     }
 
@@ -116,5 +116,9 @@ public class MongoUserDetailsManager implements UserDetailsManager {
             Assert.notNull(authority, "Authorities list contains a null entry");
             Assert.hasText(authority.getAuthority(), "getAuthority() method must return a non-empty string");
         }
+    }
+
+    public void setAuthenticationManager(final AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
 }

@@ -9,9 +9,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.UserDetailsManager;
-import uk.co.caeldev.springsecuritymongo.commons.SecurityRDG;
 import uk.co.caeldev.springsecuritymongo.builders.UserBuilder;
+import uk.co.caeldev.springsecuritymongo.commons.SecurityRDG;
 import uk.co.caeldev.springsecuritymongo.domain.User;
 import uk.co.caeldev.springsecuritymongo.repositories.UserRepository;
 import uk.co.caeldev.springsecuritymongo.services.SecurityContextService;
@@ -34,11 +33,12 @@ public class MongoUserDetailsManagerTest {
     @Mock
     private SecurityContextService securityContextService;
 
-    private UserDetailsManager mongoUserDetailsManager;
+    private MongoUserDetailsManager mongoUserDetailsManager;
 
     @Before
     public void setup() {
-        mongoUserDetailsManager = new MongoUserDetailsManager(userRepository, authenticationManager, securityContextService);
+        mongoUserDetailsManager = new MongoUserDetailsManager(userRepository, securityContextService);
+        mongoUserDetailsManager.setAuthenticationManager(authenticationManager);
     }
 
     @Test
