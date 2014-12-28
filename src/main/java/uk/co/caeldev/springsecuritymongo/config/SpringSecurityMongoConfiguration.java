@@ -1,4 +1,4 @@
-package uk.co.caeldev.springsecuritymongo.conf;
+package uk.co.caeldev.springsecuritymongo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
