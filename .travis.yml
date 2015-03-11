@@ -5,3 +5,6 @@ notifications:
   email:
     recipients:
       - adolfoecs@gmail.com
+
+after_success:
+  - ./gradlew uploadArchives
