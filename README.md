@@ -1,5 +1,7 @@
 #Spring Security Mongo
 
+[![Build Status](https://travis-ci.org/caelwinner/spring-security-mongo.svg?branch=master)](https://travis-ci.org/caelwinner/spring-security-mongo)
+
 Library to provide full implementation of all the repositories
 and provider necesarry to have all the security persisted in MongoDB.
 
