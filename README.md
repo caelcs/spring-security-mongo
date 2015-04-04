@@ -20,6 +20,6 @@ Add as dependency to your project and then use the beans in your Spring Oauth2 C
 <dependency>
     <groupId>uk.co.caeldev</groupId>
     <artifactId>spring-security-mongo</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.6</version>
 </dependency>
 ```
