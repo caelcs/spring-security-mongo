@@ -1,6 +1,7 @@
 package uk.co.caeldev.springsecuritymongo.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -22,8 +23,8 @@ public class MongoClientDetails implements ClientDetails {
     private Integer refreshTokenValiditySeconds;
     private Map<String, Object> additionalInformation = new LinkedHashMap<String, Object>();
     private Set<String> autoApproveScopes;
-    ;
 
+    @PersistenceConstructor
     public MongoClientDetails(final String clientId,
                               final String clientSecret,
                               final Set<String> scope,

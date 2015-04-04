@@ -9,8 +9,6 @@ import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.*;
 
 public final class UserBuilder {
 
-    private String id = string().next();
-    private String uuid = string().next();
     private String password = string().next();
     private String username = string().next();
     private Set<GrantedAuthority> authorities = set(ofGrantedAuthority()).next();
@@ -27,8 +25,7 @@ public final class UserBuilder {
     }
 
     public User build() {
-        return new User(id,
-                uuid,
+        return new User(
                 password,
                 username,
                 authorities,

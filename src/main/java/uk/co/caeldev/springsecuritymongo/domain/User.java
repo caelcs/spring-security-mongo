@@ -1,6 +1,7 @@
 package uk.co.caeldev.springsecuritymongo.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,27 +15,23 @@ import java.util.Set;
 public class User implements UserDetails, CredentialsContainer {
 
     @Id
-    private final String id;
-    private final String uuid;
-    private String password;
     private final String username;
+    private String password;
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
     private final boolean accountNonLocked;
     private final boolean credentialsNonExpired;
     private final boolean enabled;
 
-    public User(final String id,
-                final String uuid,
-                final String password,
+
+    @PersistenceConstructor
+    public User(final String password,
                 final String username,
                 final Set<GrantedAuthority> authorities,
                 final boolean accountNonExpired,
                 final boolean accountNonLocked,
                 final boolean credentialsNonExpired,
                 final boolean enabled) {
-        this.id = id;
-        this.uuid = uuid;
         this.password = password;
         this.username = username;
         this.authorities = authorities;
@@ -79,14 +76,6 @@ public class User implements UserDetails, CredentialsContainer {
         return enabled;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
     @Override
     public void eraseCredentials() {
         password = null;
@@ -94,7 +83,7 @@ public class User implements UserDetails, CredentialsContainer {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, password, username, authorities, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled);
+        return Objects.hash(password, username, authorities, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled);
     }
 
     @Override
@@ -106,7 +95,7 @@ public class User implements UserDetails, CredentialsContainer {
             return false;
         }
         final User other = (User) obj;
-        return Objects.equals(this.uuid, other.uuid) && Objects.equals(this.password, other.password) && Objects.equals(this.username, other.username) && Objects.equals(this.authorities, other.authorities) && Objects.equals(this.accountNonExpired, other.accountNonExpired) && Objects.equals(this.accountNonLocked, other.accountNonLocked) && Objects.equals(this.credentialsNonExpired, other.credentialsNonExpired) && Objects.equals(this.enabled, other.enabled);
+        return Objects.equals(this.password, other.password) && Objects.equals(this.username, other.username) && Objects.equals(this.authorities, other.authorities) && Objects.equals(this.accountNonExpired, other.accountNonExpired) && Objects.equals(this.accountNonLocked, other.accountNonLocked) && Objects.equals(this.credentialsNonExpired, other.credentialsNonExpired) && Objects.equals(this.enabled, other.enabled);
     }
 
     @Override
@@ -119,8 +108,6 @@ public class User implements UserDetails, CredentialsContainer {
                 ", authorities=" + authorities +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", uuid='" + uuid + '\'' +
-                ", id='" + id + '\'' +
                 '}';
     }
 }

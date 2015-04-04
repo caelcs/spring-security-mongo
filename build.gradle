@@ -128,23 +128,30 @@ uploadArchives {
 }
 
 configurations {
-    compile.exclude(group: 'org.springframework.boot', module: 'spring-boot-starter-logging')
+    providedRuntime
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-aop")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}")
     compile("com.google.guava:guava:${guavaVersion}")
     compile("com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}")
     compile("joda-time:joda-time:${jodaTimeVersion}")
+
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.assertj:assertj-core:${assertjCoreVersion}")
     testCompile("uk.org.fyodor:fyodor-core:${fyodorVersion}")
     testCompile("uk.org.fyodor:fyodor-junit:${fyodorVersion}")
     testCompile("uk.org.fyodor:fyodor-jodatime:${fyodorVersion}")
+    testCompile("com.github.fakemongo:fongo:${fongoVersion}")
+    testCompile("com.lordofthejars:nosqlunit-mongodb:${nosqlunitMongodbVersion}")
+    testCompile("com.jayway.jsonpath:json-path:${jsonPathVersion}")
 }
 
 task wrapper(type: Wrapper) {

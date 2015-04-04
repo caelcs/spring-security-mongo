@@ -1,5 +1,6 @@
 package uk.co.caeldev.springsecuritymongo;
 
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +41,17 @@ public class MongoUserDetailsManager implements UserDetailsManager {
     @Override
     public void createUser(final UserDetails user) {
         validateUserDetails(user);
-        userRepository.save(user);
+        userRepository.save(getUser(user));
+    }
+
+    private User getUser(UserDetails user) {
+        return new User(user.getPassword(), user.getUsername(), Sets.newConcurrentHashSet(user.getAuthorities()), user.isAccountNonExpired(), user.isAccountNonLocked(),user.isCredentialsNonExpired(), user.isEnabled());
     }
 
     @Override
     public void updateUser(final UserDetails user) {
         validateUserDetails(user);
-        userRepository.save(user);
+        userRepository.save(getUser(user));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package uk.co.caeldev.springsecuritymongo.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
@@ -18,6 +19,7 @@ public class MongoOAuth2AccessToken {
     private final byte[] authentication;
     private final String refreshToken;
 
+    @PersistenceConstructor
     public MongoOAuth2AccessToken(final String tokenId,
                                   final byte[] token,
                                   final String authenticationId,

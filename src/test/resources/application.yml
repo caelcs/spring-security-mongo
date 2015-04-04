@@ -1,0 +1,6 @@
+mongo:
+  host: localhost
+  port: 27017
+  database: copyshare
+  username: dev
+  password: dev
