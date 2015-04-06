@@ -29,8 +29,8 @@ public class MongoApprovalRepositoryImpl implements MongoApprovalRepositoryBase 
         boolean result = true;
         for (MongoApproval mongoApproval : mongoApprovals) {
             final Update update = Update.update("expiresAt", mongoApproval.getExpiresAt())
-                    .addToSet("status", mongoApproval.getStatus())
-                    .addToSet("lastModifiedAt", mongoApproval.getLastUpdatedAt());
+                    .set("status", mongoApproval.getStatus())
+                    .set("lastUpdatedAt", mongoApproval.getLastUpdatedAt());
 
             final WriteResult writeResult = mongoTemplate.upsert(byUserIdAndClientIdAndScope(mongoApproval), update, MongoApproval.class);
 

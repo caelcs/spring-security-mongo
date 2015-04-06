@@ -31,14 +31,14 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
         final Query query = Query.query(Criteria.where("clientId").is(mongoClientDetails.getClientId()));
 
         final Update update = Update.update("scope", mongoClientDetails.getScope())
-                .addToSet("resourceIds", mongoClientDetails.getResourceIds())
-                .addToSet("authorizedGrantTypes", mongoClientDetails.getAuthorizedGrantTypes())
-                .addToSet("authorities", mongoClientDetails.getAuthorities())
-                .addToSet("accessTokenValiditySeconds", mongoClientDetails.getAccessTokenValiditySeconds())
-                .addToSet("refreshTokenValiditySeconds", mongoClientDetails.getRefreshTokenValiditySeconds())
-                .addToSet("additionalInformation", mongoClientDetails.getAdditionalInformation())
-                .addToSet("autoApproveScopes", mongoClientDetails.getAutoApproveScopes())
-                .addToSet("registeredRedirectUris", mongoClientDetails.getRegisteredRedirectUri());
+                .set("resourceIds", mongoClientDetails.getResourceIds())
+                .set("authorizedGrantTypes", mongoClientDetails.getAuthorizedGrantTypes())
+                .set("authorities", mongoClientDetails.getAuthorities())
+                .set("accessTokenValiditySeconds", mongoClientDetails.getAccessTokenValiditySeconds())
+                .set("refreshTokenValiditySeconds", mongoClientDetails.getRefreshTokenValiditySeconds())
+                .set("additionalInformation", mongoClientDetails.getAdditionalInformation())
+                .set("autoApproveScopes", mongoClientDetails.getAutoApproveScopes())
+                .set("registeredRedirectUris", mongoClientDetails.getRegisteredRedirectUri());
 
         final WriteResult writeResult = mongoTemplate.updateFirst(query, update, MongoClientDetails.class);
 

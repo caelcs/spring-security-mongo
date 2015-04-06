@@ -29,4 +29,14 @@ public class MongoApprovalBuilder {
     public MongoApproval build() {
         return new MongoApproval(id, userId, clientId, scope, status, expiresAt, lastUpdatedAt);
     }
+
+    public MongoApprovalBuilder clientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    public MongoApprovalBuilder userId(String userId) {
+        this.userId = userId;
+        return this;
+    }
 }
