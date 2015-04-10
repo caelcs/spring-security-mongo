@@ -8,6 +8,4 @@ import uk.co.caeldev.springsecuritymongo.domain.User;
 
 public interface UserRepository extends MongoRepository<User, String>, UserRepositoryBase {
 
-    @Query(value = "{ 'username' : ?0 }")
-    User findByUsername(String username);
 }

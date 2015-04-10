@@ -58,7 +58,7 @@ public class MongoUserDetailsManager implements UserDetailsManager {
 
     @Override
     public void deleteUser(final String username) {
-        final User user = userRepository.findByUsername(username);
+        final User user = userRepository.findOne(username);
         userRepository.delete(user);
     }
 
@@ -92,13 +92,13 @@ public class MongoUserDetailsManager implements UserDetailsManager {
 
     @Override
     public boolean userExists(final String username) {
-        final User user = userRepository.findByUsername(username);
+        final User user = userRepository.findOne(username);
         return user != null;
     }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
+        return userRepository.findOne(username);
     }
 
     protected Authentication createNewAuthentication(final Authentication currentAuth) {

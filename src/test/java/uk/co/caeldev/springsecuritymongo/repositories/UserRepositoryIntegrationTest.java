@@ -36,7 +36,7 @@ public class UserRepositoryIntegrationTest {
         User result = userRepository.save(user);
 
         //Then
-        User expectedUser = userRepository.findByUsername(user.getUsername());
+        User expectedUser = userRepository.findOne(user.getUsername());
         assertThat(result).isEqualTo(expectedUser);
     }
 

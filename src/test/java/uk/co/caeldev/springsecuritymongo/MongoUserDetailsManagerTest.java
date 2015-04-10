@@ -86,7 +86,7 @@ public class MongoUserDetailsManagerTest {
         final User user = UserBuilder.userBuilder().username(username).build();
 
         // And
-        given(userRepository.findByUsername(username)).willReturn(user);
+        given(userRepository.findOne(username)).willReturn(user);
 
         // When
         mongoUserDetailsManager.deleteUser(username);
@@ -141,7 +141,7 @@ public class MongoUserDetailsManagerTest {
         final User user = UserBuilder.userBuilder().username(username).build();
 
         // And
-        given(userRepository.findByUsername(username)).willReturn(user);
+        given(userRepository.findOne(username)).willReturn(user);
 
         // When
         final boolean userExists = mongoUserDetailsManager.userExists(username);
@@ -156,7 +156,7 @@ public class MongoUserDetailsManagerTest {
         final String username = string().next();
 
         // And
-        given(userRepository.findByUsername(username)).willReturn(null);
+        given(userRepository.findOne(username)).willReturn(null);
 
         // When
         final boolean userExists = mongoUserDetailsManager.userExists(username);
@@ -171,7 +171,7 @@ public class MongoUserDetailsManagerTest {
         final String username = string().next();
 
         // And
-        given(userRepository.findByUsername(username)).willReturn(UserBuilder.userBuilder().username(username).build());
+        given(userRepository.findOne(username)).willReturn(UserBuilder.userBuilder().username(username).build());
 
         // When
         final UserDetails user = mongoUserDetailsManager.loadUserByUsername(username);
@@ -193,7 +193,7 @@ public class MongoUserDetailsManagerTest {
         given(securityContextService.getAuthentication()).willReturn(authenticationToken);
 
         // And
-        given(userRepository.findByUsername(username)).willReturn(user);
+        given(userRepository.findOne(username)).willReturn(user);
 
         // When
         final String newPassword = string().next();
