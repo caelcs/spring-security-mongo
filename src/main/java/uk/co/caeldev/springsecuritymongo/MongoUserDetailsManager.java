@@ -33,9 +33,11 @@ public class MongoUserDetailsManager implements UserDetailsManager {
     
     @Autowired
     public MongoUserDetailsManager(final UserRepository userRepository,
-                                   final SecurityContextService securityContextService) {
+                                   final SecurityContextService securityContextService,
+                                   final AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.securityContextService = securityContextService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -121,9 +123,5 @@ public class MongoUserDetailsManager implements UserDetailsManager {
             Assert.notNull(authority, "Authorities list contains a null entry");
             Assert.hasText(authority.getAuthority(), "getAuthority() method must return a non-empty string");
         }
-    }
-
-    public void setAuthenticationManager(final AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
     }
 }

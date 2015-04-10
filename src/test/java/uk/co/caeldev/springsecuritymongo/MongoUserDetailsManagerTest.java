@@ -37,8 +37,7 @@ public class MongoUserDetailsManagerTest {
 
     @Before
     public void setup() {
-        mongoUserDetailsManager = new MongoUserDetailsManager(userRepository, securityContextService);
-        mongoUserDetailsManager.setAuthenticationManager(authenticationManager);
+        mongoUserDetailsManager = new MongoUserDetailsManager(userRepository, securityContextService, authenticationManager);
     }
 
     @Test
