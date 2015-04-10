@@ -12,6 +12,8 @@ import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
 @Component
 public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepositoryBase {
 
+    public static final String ID = "_id";
+    public static final String CLIENT_SECRET = "clientSecret";
     private final MongoTemplate mongoTemplate;
 
     @Autowired
@@ -21,14 +23,14 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
 
     @Override
     public boolean deleteByClientId(String clientId) {
-        final Query query = Query.query(Criteria.where("clientId").is(clientId));
+        final Query query = Query.query(Criteria.where(ID).is(clientId));
         final WriteResult writeResult = mongoTemplate.remove(query, MongoClientDetails.class);
         return writeResult.getN() == 1;
     }
 
     @Override
     public boolean update(final MongoClientDetails mongoClientDetails) {
-        final Query query = Query.query(Criteria.where("clientId").is(mongoClientDetails.getClientId()));
+        final Query query = Query.query(Criteria.where(ID).is(mongoClientDetails.getClientId()));
 
         final Update update = Update.update("scope", mongoClientDetails.getScope())
                 .set("resourceIds", mongoClientDetails.getResourceIds())
@@ -48,9 +50,9 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
     @Override
     public boolean updateClientSecret(final String clientId,
                                       final String newSecret) {
-        final Query query = Query.query(Criteria.where("clientId").is(clientId));
+        final Query query = Query.query(Criteria.where(ID).is(clientId));
 
-        final Update update = Update.update("clientSecret", newSecret);
+        final Update update = Update.update(CLIENT_SECRET, newSecret);
 
         final WriteResult writeResult = mongoTemplate.updateFirst(query, update, MongoClientDetails.class);
 
@@ -59,7 +61,7 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
 
     @Override
     public MongoClientDetails findByClientId(final String clientId) throws IllegalArgumentException {
-        final Query query = Query.query(Criteria.where("clientId").is(clientId));
+        final Query query = Query.query(Criteria.where(ID).is(clientId));
         final MongoClientDetails mongoClientDetails = mongoTemplate.findOne(query, MongoClientDetails.class);
         if (mongoClientDetails == null) {
             throw new IllegalArgumentException("No valid client id");
