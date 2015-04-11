@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public class MongoOAuth2AccessTokenRepositoryImpl implements MongoOAuth2AccessTokenRepositoryBase {
 
+    public static final String ID = "_id";
     private final MongoTemplate mongoTemplate;
 
     @Autowired
@@ -22,13 +23,13 @@ public class MongoOAuth2AccessTokenRepositoryImpl implements MongoOAuth2AccessTo
 
     @Override
     public MongoOAuth2AccessToken findByTokenId(final String tokenId) {
-        final Query query = Query.query(Criteria.where("tokenId").is(tokenId));
+        final Query query = Query.query(Criteria.where(ID).is(tokenId));
         return mongoTemplate.findOne(query, MongoOAuth2AccessToken.class);
     }
 
     @Override
     public boolean deleteByTokenId(final String tokenId) {
-        final Query query = Query.query(Criteria.where("tokenId").is(tokenId));
+        final Query query = Query.query(Criteria.where(ID).is(tokenId));
         final WriteResult removeResult = mongoTemplate.remove(query);
         return removeResult.getN() == 1;
     }
