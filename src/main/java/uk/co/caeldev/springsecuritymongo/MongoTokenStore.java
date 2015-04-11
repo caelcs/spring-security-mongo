@@ -53,7 +53,16 @@ public class MongoTokenStore implements TokenStore {
         final String tokenId = extractTokenKey(token);
 
         final MongoOAuth2AccessToken mongoOAuth2AccessToken = mongoOAuth2AccessTokenRepository.findByTokenId(tokenId);
-        return deserializeAuthentication(mongoOAuth2AccessToken.getAuthentication());
+
+        if (mongoOAuth2AccessToken != null) {
+            try {
+                return deserializeAuthentication(mongoOAuth2AccessToken.getAuthentication());
+            } catch (IllegalArgumentException e) {
+                removeAccessToken(token);
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -90,7 +99,14 @@ public class MongoTokenStore implements TokenStore {
     public OAuth2AccessToken readAccessToken(final String tokenValue) {
         final String tokenKey = extractTokenKey(tokenValue);
         final MongoOAuth2AccessToken mongoOAuth2AccessToken = mongoOAuth2AccessTokenRepository.findByTokenId(tokenKey);
-        return deserializeAccessToken(mongoOAuth2AccessToken.getToken());
+        if (mongoOAuth2AccessToken != null) {
+            try {
+                return deserializeAccessToken(mongoOAuth2AccessToken.getToken());
+            } catch (IllegalArgumentException e) {
+                removeAccessToken(tokenValue);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -114,7 +130,16 @@ public class MongoTokenStore implements TokenStore {
     public OAuth2RefreshToken readRefreshToken(final String tokenValue) {
         final String tokenKey = extractTokenKey(tokenValue);
         final MongoOAuth2RefreshToken mongoOAuth2RefreshToken = mongoOAuth2RefreshTokenRepository.findByTokenId(tokenKey);
-        return deserializeRefreshToken(mongoOAuth2RefreshToken.getToken());
+
+        if (mongoOAuth2RefreshToken != null) {
+            try {
+                return deserializeRefreshToken(mongoOAuth2RefreshToken.getToken());
+            } catch (IllegalArgumentException e) {
+                removeRefreshToken(tokenValue);
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -134,13 +159,15 @@ public class MongoTokenStore implements TokenStore {
 
     @Override
     public OAuth2AccessToken getAccessToken(final OAuth2Authentication authentication) {
-        OAuth2AccessToken accessToken;
+        OAuth2AccessToken accessToken = null;
 
         String key = authenticationKeyGenerator.extractKey(authentication);
 
         final MongoOAuth2AccessToken oAuth2AccessToken = mongoOAuth2AccessTokenRepository.findByAuthenticationId(key);
 
-        accessToken = deserializeAccessToken(oAuth2AccessToken.getToken());
+        if (oAuth2AccessToken != null) {
+            accessToken = deserializeAccessToken(oAuth2AccessToken.getToken());
+        }
 
         if (accessToken != null
                 && !key.equals(authenticationKeyGenerator.extractKey(readAuthentication(accessToken.getValue())))) {
@@ -234,7 +261,15 @@ public class MongoTokenStore implements TokenStore {
 
         final MongoOAuth2RefreshToken mongoOAuth2RefreshToken = mongoOAuth2RefreshTokenRepository.findByTokenId(tokenId);
 
-        return deserializeAuthentication(mongoOAuth2RefreshToken.getAuthentication());
+        if (mongoOAuth2RefreshToken != null) {
+            try {
+                return deserializeAuthentication(mongoOAuth2RefreshToken.getAuthentication());
+            } catch (IllegalArgumentException e) {
+                removeRefreshToken(value);
+            }
+        }
+
+        return null;
     }
 
     public void removeRefreshToken(String token) {

@@ -91,6 +91,22 @@ public class MongoTokenStoreTest {
     }
 
     @Test
+    public void shouldReturnNullWhenNoReadAccessToken() {
+        //Given
+        final String tokenValue = string().next();
+
+        //And
+        given(mongoOAuth2AccessTokenRepository.findByTokenId(any(String.class)))
+                .willReturn(null);
+
+        //When
+        final OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(tokenValue);
+
+        //Then
+        assertThat(oAuth2AccessToken).isNull();
+    }
+
+    @Test
     public void shouldRemoveAccessToken() {
         //Given
         final OAuth2AccessToken oAuth2AccessToken = OAuth2AccessTokenBuilder.oAuth2AccessTokenBuilder().build();
@@ -143,6 +159,22 @@ public class MongoTokenStoreTest {
     }
 
     @Test
+    public void shouldReadNullWhenNoRefreshToken() {
+        //Given
+        final String tokenValue = string().next();
+
+        //And
+        given(mongoOAuth2RefreshTokenRepository.findByTokenId(any(String.class)))
+                .willReturn(null);
+
+        //When
+        final OAuth2RefreshToken result = tokenStore.readRefreshToken(tokenValue);
+
+        //Then
+        assertThat(result).isNull();
+    }
+
+    @Test
     public void shouldReadAuthenticationForRefreshToken() {
         //Given
         final OAuth2RefreshToken oAuth2RefreshToken = OAuth2RefreshTokenBuilder.oAuth2RefreshToken().build();
@@ -162,6 +194,21 @@ public class MongoTokenStoreTest {
         //Then
         assertThat(oAuth2Authentication.getPrincipal()).isEqualTo(authentication.getPrincipal());
         assertThat(oAuth2Authentication.getCredentials()).isEqualTo(authentication.getCredentials());
+    }
+
+    @Test
+    public void shouldReadNullWhenAuthenticationForNoRefreshToken() {
+        //Given
+        final OAuth2RefreshToken oAuth2RefreshToken = OAuth2RefreshTokenBuilder.oAuth2RefreshToken().build();
+
+        //And
+        given(mongoOAuth2RefreshTokenRepository.findByTokenId(any(String.class)))
+                .willReturn(null);
+        //When
+        final OAuth2Authentication oAuth2Authentication = tokenStore.readAuthenticationForRefreshToken(oAuth2RefreshToken);
+
+        //Then
+        assertThat(oAuth2Authentication).isNull();
     }
 
     @Test
@@ -218,6 +265,28 @@ public class MongoTokenStoreTest {
         //Then
         verify(mongoOAuth2AccessTokenRepository, never()).deleteByTokenId(any(String.class));
         verify(mongoOAuth2AccessTokenRepository, never()).save(any(MongoOAuth2AccessToken.class));
+    }
+
+    @Test
+    public void shouldReturnNullWhenNoAccessToken() {
+        //Given
+        final OAuth2Authentication oAuth2Authentication = OAuth2AuthenticationBuilder.oAuth2AuthenticationBuilder().build();
+
+        //And
+        final String value = string().next();
+        given(authenticationKeyGenerator.extractKey(oAuth2Authentication)).willReturn(value);
+
+        //And
+        given(mongoOAuth2AccessTokenRepository.findByAuthenticationId(value))
+                .willReturn(null);
+
+        //When
+        tokenStore.getAccessToken(oAuth2Authentication);
+
+        //Then
+        verify(mongoOAuth2AccessTokenRepository, never()).deleteByTokenId(any(String.class));
+        verify(mongoOAuth2AccessTokenRepository, never()).save(any(MongoOAuth2AccessToken.class));
+        verify(mongoOAuth2AccessTokenRepository, never()).findByTokenId(anyString());
     }
 
     @Test
