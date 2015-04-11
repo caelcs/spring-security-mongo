@@ -1,14 +1,12 @@
 package uk.co.caeldev.springsecuritymongo;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
-import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Component;
-import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsRepository;
 import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
+import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -34,14 +32,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         try {
-            final MongoClientDetails mongoClientDetails = mongoClientDetailsRepository.findByClientId(clientId);
-
-            return new BaseClientDetails(mongoClientDetails.getClientId(),
-                    Joiner.on(",").join(mongoClientDetails.getResourceIds()),
-                    Joiner.on(",").join(mongoClientDetails.getScope()),
-                    Joiner.on(",").join(mongoClientDetails.getAuthorizedGrantTypes()),
-                    Joiner.on(",").join(mongoClientDetails.getAuthorities()),
-                    Joiner.on(",").join(mongoClientDetails.getRegisteredRedirectUri()));
+            return mongoClientDetailsRepository.findByClientId(clientId);
         } catch (IllegalArgumentException e) {
             throw new ClientRegistrationException("No Client Details for client id", e);
         }
@@ -59,7 +50,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
                 clientDetails.getAccessTokenValiditySeconds(),
                 clientDetails.getRefreshTokenValiditySeconds(),
                 clientDetails.getAdditionalInformation(),
-                null);
+                getAutoApproveScopes(clientDetails));
 
         mongoClientDetailsRepository.save(mongoClientDetails);
     }
