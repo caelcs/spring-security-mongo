@@ -24,6 +24,9 @@ public class MongoClientDetails implements ClientDetails {
     private Map<String, Object> additionalInformation = new LinkedHashMap<String, Object>();
     private Set<String> autoApproveScopes;
 
+    public MongoClientDetails() {
+    }
+
     @PersistenceConstructor
     public MongoClientDetails(final String clientId,
                               final String clientSecret,

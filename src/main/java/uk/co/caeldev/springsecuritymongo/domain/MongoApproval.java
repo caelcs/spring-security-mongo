@@ -20,6 +20,9 @@ public class MongoApproval {
     private LocalDate expiresAt;
     private LocalDate lastUpdatedAt;
 
+    public MongoApproval() {
+    }
+
     @PersistenceConstructor
     public MongoApproval(final String id,
                          final String userId,

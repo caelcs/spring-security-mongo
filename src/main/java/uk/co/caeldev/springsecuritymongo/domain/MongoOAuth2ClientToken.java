@@ -18,6 +18,9 @@ public class MongoOAuth2ClientToken {
     private String username;
     private String clientId;
 
+    public MongoOAuth2ClientToken() {
+    }
+
     @PersistenceConstructor
     public MongoOAuth2ClientToken(final String id,
                                   final String tokenId,

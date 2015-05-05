@@ -11,13 +11,16 @@ import java.util.Objects;
 public class MongoOAuth2AccessToken {
 
     @Id
-    private final String tokenId;
-    private final byte[] token;
-    private final String authenticationId;
-    private final String username;
-    private final String clientId;
-    private final byte[] authentication;
-    private final String refreshToken;
+    private String tokenId;
+    private byte[] token;
+    private String authenticationId;
+    private String username;
+    private String clientId;
+    private byte[] authentication;
+    private String refreshToken;
+
+    public MongoOAuth2AccessToken() {
+    }
 
     @PersistenceConstructor
     public MongoOAuth2AccessToken(final String tokenId,

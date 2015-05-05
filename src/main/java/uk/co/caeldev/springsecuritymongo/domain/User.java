@@ -16,15 +16,17 @@ import java.util.UUID;
 public class User implements UserDetails, CredentialsContainer {
 
     @Id
-    private final String username;
+    private String username;
     private String password;
-    private final UUID userUUID;
-    private final Set<GrantedAuthority> authorities;
-    private final boolean accountNonExpired;
-    private final boolean accountNonLocked;
-    private final boolean credentialsNonExpired;
-    private final boolean enabled;
+    private UUID userUUID;
+    private Set<GrantedAuthority> authorities;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
 
+    public User() {
+    }
 
     @PersistenceConstructor
     public User(final String password,

@@ -8,9 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class MongoOAuth2RefreshToken {
 
     @Id
-    private final String tokenId;
-    private final byte[] token;
-    private final byte[] authentication;
+    private String tokenId;
+    private byte[] token;
+    private byte[] authentication;
+
+    public MongoOAuth2RefreshToken() {
+    }
 
     @PersistenceConstructor
     public MongoOAuth2RefreshToken(final String tokenId,
