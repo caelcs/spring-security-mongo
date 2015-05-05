@@ -46,8 +46,9 @@ public class MongoUserDetailsManager implements UserDetailsManager {
         userRepository.save(getUser(user));
     }
 
-    private User getUser(UserDetails user) {
-        return new User(user.getPassword(), user.getUsername(), Sets.newConcurrentHashSet(user.getAuthorities()), user.isAccountNonExpired(), user.isAccountNonLocked(),user.isCredentialsNonExpired(), user.isEnabled());
+    private User getUser(UserDetails userDetails) {
+        final User user = (User) userDetails;
+        return new User(user.getPassword(), user.getUsername(), user.getUserUUID(), Sets.newConcurrentHashSet(user.getAuthorities()), user.isAccountNonExpired(), user.isAccountNonLocked(),user.isCredentialsNonExpired(), user.isEnabled());
     }
 
     @Override

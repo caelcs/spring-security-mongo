@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import uk.co.caeldev.springsecuritymongo.domain.User;
 
 import java.util.Set;
+import java.util.UUID;
 
 import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.*;
 
@@ -11,6 +12,7 @@ public final class UserBuilder {
 
     private String password = string().next();
     private String username = string().next();
+    private UUID userUUID = UUID.randomUUID();
     private Set<GrantedAuthority> authorities = set(ofGrantedAuthority()).next();
     private boolean accountNonExpired = bool().next();
     private boolean accountNonLocked = bool().next();
@@ -28,6 +30,7 @@ public final class UserBuilder {
         return new User(
                 password,
                 username,
+                userUUID,
                 authorities,
                 accountNonExpired,
                 accountNonLocked,

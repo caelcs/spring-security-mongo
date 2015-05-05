@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Document
 public class User implements UserDetails, CredentialsContainer {
@@ -17,6 +18,7 @@ public class User implements UserDetails, CredentialsContainer {
     @Id
     private final String username;
     private String password;
+    private final UUID userUUID;
     private final Set<GrantedAuthority> authorities;
     private final boolean accountNonExpired;
     private final boolean accountNonLocked;
@@ -27,6 +29,7 @@ public class User implements UserDetails, CredentialsContainer {
     @PersistenceConstructor
     public User(final String password,
                 final String username,
+                final UUID userUUID,
                 final Set<GrantedAuthority> authorities,
                 final boolean accountNonExpired,
                 final boolean accountNonLocked,
@@ -34,6 +37,7 @@ public class User implements UserDetails, CredentialsContainer {
                 final boolean enabled) {
         this.password = password;
         this.username = username;
+        this.userUUID = userUUID;
         this.authorities = authorities;
         this.accountNonExpired = accountNonExpired;
         this.accountNonLocked = accountNonLocked;
@@ -81,9 +85,13 @@ public class User implements UserDetails, CredentialsContainer {
         password = null;
     }
 
+    public UUID getUserUUID() {
+        return userUUID;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(password, username, authorities, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled);
+        return Objects.hash(password, username, userUUID, authorities, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled);
     }
 
     @Override
@@ -95,19 +103,20 @@ public class User implements UserDetails, CredentialsContainer {
             return false;
         }
         final User other = (User) obj;
-        return Objects.equals(this.password, other.password) && Objects.equals(this.username, other.username) && Objects.equals(this.authorities, other.authorities) && Objects.equals(this.accountNonExpired, other.accountNonExpired) && Objects.equals(this.accountNonLocked, other.accountNonLocked) && Objects.equals(this.credentialsNonExpired, other.credentialsNonExpired) && Objects.equals(this.enabled, other.enabled);
+        return Objects.equals(this.password, other.password) && Objects.equals(this.username, other.username) && Objects.equals(this.userUUID, other.userUUID) && Objects.equals(this.authorities, other.authorities) && Objects.equals(this.accountNonExpired, other.accountNonExpired) && Objects.equals(this.accountNonLocked, other.accountNonLocked) && Objects.equals(this.credentialsNonExpired, other.credentialsNonExpired) && Objects.equals(this.enabled, other.enabled);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "enabled=" + enabled +
-                ", credentialsNonExpired=" + credentialsNonExpired +
-                ", accountNonLocked=" + accountNonLocked +
-                ", accountNonExpired=" + accountNonExpired +
-                ", authorities=" + authorities +
-                ", username='" + username + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", userUUID=" + userUUID +
+                ", authorities=" + authorities +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
                 '}';
     }
 }
