@@ -30,14 +30,14 @@ public class MongoOAuth2AccessTokenRepositoryImpl implements MongoOAuth2AccessTo
     @Override
     public boolean deleteByTokenId(final String tokenId) {
         final Query query = Query.query(Criteria.where(ID).is(tokenId));
-        final WriteResult removeResult = mongoTemplate.remove(query);
+        final WriteResult removeResult = mongoTemplate.remove(query, MongoOAuth2AccessToken.class);
         return removeResult.getN() == 1;
     }
 
     @Override
     public boolean deleteByRefreshTokenId(String refreshTokenId) {
         final Query query = Query.query(Criteria.where("refreshToken").is(refreshTokenId));
-        final WriteResult removeResult = mongoTemplate.remove(query);
+        final WriteResult removeResult = mongoTemplate.remove(query, MongoOAuth2AccessToken.class);
         return removeResult.getN() == 1;
     }
 
