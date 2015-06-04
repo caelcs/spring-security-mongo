@@ -1,6 +1,8 @@
 package uk.co.caeldev.springsecuritymongo;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Component;
 import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsRepository;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -93,7 +96,8 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public List<ClientDetails> listClientDetails() {
-        return null;
+        final List<MongoClientDetails> all = mongoClientDetailsRepository.findAll();
+        return FluentIterable.from(all).transform(toClientDetails()).toList();
     }
 
     private Set<String> getAutoApproveScopes(final ClientDetails clientDetails) {
@@ -108,6 +112,16 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
             @Override
             public boolean apply(final String scope) {
                 return clientDetails.isAutoApprove(scope);
+            }
+        };
+    }
+
+    private Function<MongoClientDetails, ClientDetails> toClientDetails() {
+        return new Function<MongoClientDetails, ClientDetails>() {
+            @Nullable
+            @Override
+            public ClientDetails apply(MongoClientDetails input) {
+                return input;
             }
         };
     }

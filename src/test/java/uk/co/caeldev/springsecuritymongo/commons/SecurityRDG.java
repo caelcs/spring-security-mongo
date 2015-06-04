@@ -1,5 +1,6 @@
 package uk.co.caeldev.springsecuritymongo.commons;
 
+import net.minidev.json.JSONObject;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.approval.Approval;
@@ -7,6 +8,7 @@ import uk.co.caeldev.springsecuritymongo.builders.MongoApprovalBuilder;
 import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 import uk.co.caeldev.springsecuritymongo.domain.MongoOAuth2AccessToken;
 import uk.org.fyodor.generators.Generator;
+import uk.org.fyodor.generators.characters.CharacterSetFilter;
 
 import java.io.Serializable;
 
@@ -14,6 +16,15 @@ import static uk.co.caeldev.springsecuritymongo.builders.ApprovalBuilder.approva
 import static uk.co.caeldev.springsecuritymongo.builders.MongoOAuth2AccessTokenBuilder.mongoOAuth2AccessTokenBuilder;
 
 public class SecurityRDG extends uk.org.fyodor.generators.RDG {
+
+    public static Generator<String> ofEscapedString() {
+        return new Generator<String>() {
+            @Override
+            public String next() {
+                return string(30, CharacterSetFilter.LettersAndDigits).next();
+            }
+        };
+    }
 
     public static Generator<GrantedAuthority> ofGrantedAuthority() {
         return new Generator<GrantedAuthority>() {
