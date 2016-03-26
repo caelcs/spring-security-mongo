@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsRepository;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -118,7 +117,6 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     private Function<MongoClientDetails, ClientDetails> toClientDetails() {
         return new Function<MongoClientDetails, ClientDetails>() {
-            @Nullable
             @Override
             public ClientDetails apply(MongoClientDetails input) {
                 return input;

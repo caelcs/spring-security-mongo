@@ -135,11 +135,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-aop")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
-    compile("org.springframework.boot:spring-boot-starter-data-rest")
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
     compile("com.google.guava:guava:${guavaVersion}")
-    compile("com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}")
+    compile("com.fasterxml.jackson.core:jackson-databind")
     compile("joda-time:joda-time:${jodaTimeVersion}")
 
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")

@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import uk.co.caeldev.springsecuritymongo.builders.MongoApprovalBuilder;
@@ -20,6 +21,7 @@ import static uk.org.fyodor.generators.RDG.string;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ApplicationConfiguration.class)
+@ActiveProfiles("test")
 @WebAppConfiguration
 public class MongoApprovalRepositoryIntegrationTest {
 
