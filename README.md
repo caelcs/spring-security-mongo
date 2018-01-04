@@ -15,9 +15,10 @@ and provider necessary to have all the security persisted in MongoDB.
 
 ##How to use it
 
+### Step 1
 Add as dependency to your project and then use the beans in your Spring Oauth2 Configuration
 
-### Step 1
+### Step 2
 Add this annotation to your configuration class:
 
 ```java
@@ -29,8 +30,9 @@ public class MongoSecurityConfiguration {
 ```
 Having this annotation will define in your spring context all the necessary to use this library.
 
-### Step 2
-define the following properties in your app:
+### Step 3
+define the following properties in your app if you want to use the default Mongo client. 
+If you want to use your own version just DO NOT ADD these properties.
 
 ```
 mongo.host=localhost

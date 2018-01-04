@@ -23,12 +23,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 @Configuration
 @EnableConfigurationProperties(MongoSettings.class)
-@ConditionalOnProperty({
-        "mongo.host",
-        "mongo.port",
-        "mongo.database",
-        "mongo.username",
-        "mongo.password"})
 @ComponentScan(basePackages = {"uk.co.caeldev.springsecuritymongo"})
 @EnableMongoRepositories(basePackages = {"uk.co.caeldev.springsecuritymongo.repositories"})
 public class MongoConfiguration {
@@ -41,6 +35,12 @@ public class MongoConfiguration {
 
     @Configuration
     @EnableConfigurationProperties(MongoSettings.class)
+    @ConditionalOnProperty({
+            "mongo.host",
+            "mongo.port",
+            "mongo.database",
+            "mongo.username",
+            "mongo.password"})
     @Profile("!test")
     static class MongoClientConfiguration {
 
