@@ -1,6 +1,6 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.mongodb.WriteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepositoryBase {
                                final String newPassword,
                                final String username) {
         final Query searchUserQuery = new Query(where("username").is(username).andOperator(where("password").is(oldPassword)));
-        final WriteResult result = mongoTemplate.updateFirst(searchUserQuery, update("password", newPassword), User.class);
-        return result.getN() == 1? true : false;
+        final UpdateResult updateResult = mongoTemplate.updateFirst(searchUserQuery, update("password", newPassword), User.class);
+        return updateResult.wasAcknowledged();
     }
 }

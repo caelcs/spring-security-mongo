@@ -1,6 +1,6 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.mongodb.WriteResult;
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -30,15 +30,15 @@ public class MongoOAuth2AccessTokenRepositoryImpl implements MongoOAuth2AccessTo
     @Override
     public boolean deleteByTokenId(final String tokenId) {
         final Query query = Query.query(Criteria.where(ID).is(tokenId));
-        final WriteResult removeResult = mongoTemplate.remove(query, MongoOAuth2AccessToken.class);
-        return removeResult.getN() == 1;
+        final DeleteResult deleteResult = mongoTemplate.remove(query, MongoOAuth2AccessToken.class);
+        return deleteResult.wasAcknowledged();
     }
 
     @Override
     public boolean deleteByRefreshTokenId(String refreshTokenId) {
         final Query query = Query.query(Criteria.where("refreshToken").is(refreshTokenId));
-        final WriteResult removeResult = mongoTemplate.remove(query, MongoOAuth2AccessToken.class);
-        return removeResult.getN() == 1;
+        final DeleteResult deleteResult = mongoTemplate.remove(query, MongoOAuth2AccessToken.class);
+        return deleteResult.wasAcknowledged();
     }
 
     @Override

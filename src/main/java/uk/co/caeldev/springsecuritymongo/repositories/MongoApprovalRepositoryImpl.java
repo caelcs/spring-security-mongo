@@ -1,6 +1,7 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.mongodb.WriteResult;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -32,9 +33,9 @@ public class MongoApprovalRepositoryImpl implements MongoApprovalRepositoryBase 
                     .set("status", mongoApproval.getStatus())
                     .set("lastUpdatedAt", mongoApproval.getLastUpdatedAt());
 
-            final WriteResult writeResult = mongoTemplate.upsert(byUserIdAndClientIdAndScope(mongoApproval), update, MongoApproval.class);
+            final UpdateResult upsert = mongoTemplate.upsert(byUserIdAndClientIdAndScope(mongoApproval), update, MongoApproval.class);
 
-            if (writeResult.getN() != 1) {
+            if (!upsert.wasAcknowledged()) {
                 result = false;
             }
         }
@@ -46,19 +47,19 @@ public class MongoApprovalRepositoryImpl implements MongoApprovalRepositoryBase 
                                    final MongoApproval mongoApproval) {
         final Update update = Update.update("expiresAt", expiresAt);
 
-        final WriteResult writeResult = mongoTemplate.updateFirst(byUserIdAndClientIdAndScope(mongoApproval),
+        final UpdateResult updateResult = mongoTemplate.updateFirst(byUserIdAndClientIdAndScope(mongoApproval),
                 update,
                 MongoApproval.class);
 
-        return writeResult.getN() == 1;
+        return updateResult.wasAcknowledged();
     }
 
     @Override
     public boolean deleteByUserIdAndClientIdAndScope(final MongoApproval mongoApproval) {
-        final WriteResult writeResult = mongoTemplate.remove(byUserIdAndClientIdAndScope(mongoApproval),
+        final DeleteResult deleteResult = mongoTemplate.remove(byUserIdAndClientIdAndScope(mongoApproval),
                 MongoApproval.class);
 
-        return writeResult.getN() == 1;
+        return deleteResult.wasAcknowledged();
     }
 
     @Override

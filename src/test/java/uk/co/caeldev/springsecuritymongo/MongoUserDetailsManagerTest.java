@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,9 +15,11 @@ import uk.co.caeldev.springsecuritymongo.domain.User;
 import uk.co.caeldev.springsecuritymongo.repositories.UserRepository;
 import uk.co.caeldev.springsecuritymongo.services.SecurityContextService;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.string;
 
@@ -86,7 +88,7 @@ public class MongoUserDetailsManagerTest {
         final User user = UserBuilder.userBuilder().username(username).build();
 
         // And
-        given(userRepository.findOne(username)).willReturn(user);
+        given(userRepository.findByUsername(username)).willReturn(Optional.of(user));
 
         // When
         mongoUserDetailsManager.deleteUser(username);
@@ -141,7 +143,7 @@ public class MongoUserDetailsManagerTest {
         final User user = UserBuilder.userBuilder().username(username).build();
 
         // And
-        given(userRepository.findOne(username)).willReturn(user);
+        given(userRepository.findByUsername(username)).willReturn(Optional.of(user));
 
         // When
         final boolean userExists = mongoUserDetailsManager.userExists(username);
@@ -156,7 +158,7 @@ public class MongoUserDetailsManagerTest {
         final String username = string().next();
 
         // And
-        given(userRepository.findOne(username)).willReturn(null);
+        given(userRepository.findByUsername(username)).willReturn(Optional.empty());
 
         // When
         final boolean userExists = mongoUserDetailsManager.userExists(username);
@@ -171,7 +173,7 @@ public class MongoUserDetailsManagerTest {
         final String username = string().next();
 
         // And
-        given(userRepository.findOne(username)).willReturn(UserBuilder.userBuilder().username(username).build());
+        given(userRepository.findByUsername(username)).willReturn(Optional.of(UserBuilder.userBuilder().username(username).build()));
 
         // When
         final UserDetails user = mongoUserDetailsManager.loadUserByUsername(username);
@@ -193,7 +195,7 @@ public class MongoUserDetailsManagerTest {
         given(securityContextService.getAuthentication()).willReturn(authenticationToken);
 
         // And
-        given(userRepository.findOne(username)).willReturn(user);
+        given(userRepository.findByUsername(username)).willReturn(Optional.of(user));
 
         // When
         final String newPassword = string().next();

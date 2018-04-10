@@ -1,6 +1,6 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.mongodb.WriteResult;
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,8 +21,8 @@ public class MongoOAuth2ClientTokenRepositoryImpl implements MongoOAuth2ClientTo
     @Override
     public boolean deleteByAuthenticationId(final String authenticationId) {
         final Query query = Query.query(Criteria.where("authenticationId").is(authenticationId));
-        final WriteResult writeResult = mongoTemplate.remove(query, MongoOAuth2ClientToken.class);
-        return writeResult.getN() == 1;
+        final DeleteResult deleteResult = mongoTemplate.remove(query, MongoOAuth2ClientToken.class);
+        return deleteResult.wasAcknowledged();
     }
 
     @Override

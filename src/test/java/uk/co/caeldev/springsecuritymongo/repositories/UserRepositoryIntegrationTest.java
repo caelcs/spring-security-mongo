@@ -5,22 +5,23 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.caeldev.springsecuritymongo.builders.UserBuilder;
 import uk.co.caeldev.springsecuritymongo.config.ApplicationConfiguration;
 import uk.co.caeldev.springsecuritymongo.domain.User;
+
+import java.util.Optional;
 
 import static com.lordofthejars.nosqlunit.mongodb.InMemoryMongoDb.InMemoryMongoRuleBuilder.newInMemoryMongoDbRule;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.org.fyodor.generators.RDG.string;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationConfiguration.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { ApplicationConfiguration.class
+})
 @ActiveProfiles("test")
-@WebAppConfiguration
 public class UserRepositoryIntegrationTest {
 
     @ClassRule
@@ -38,8 +39,8 @@ public class UserRepositoryIntegrationTest {
         User result = userRepository.save(user);
 
         //Then
-        User expectedUser = userRepository.findOne(user.getUsername());
-        assertThat(result).isEqualTo(expectedUser);
+        Optional<User> expectedUser = userRepository.findByUsername(user.getUsername());
+        assertThat(result).isEqualTo(expectedUser.get());
     }
 
     @Test

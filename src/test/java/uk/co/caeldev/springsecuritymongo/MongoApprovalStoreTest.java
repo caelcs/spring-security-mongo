@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.oauth2.provider.approval.Approval;
 import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoApprovalRepository;
@@ -14,15 +14,11 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.list;
-import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.ofApproval;
-import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.ofMongoApproval;
-import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.string;
+import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MongoApprovalStoreTest {
@@ -43,7 +39,7 @@ public class MongoApprovalStoreTest {
         final List<Approval> approvals = list(ofApproval()).next();
 
         //And
-        given(mongoApprovalRepository.updateOrCreate(anyCollectionOf(MongoApproval.class))).willReturn(true);
+        given(mongoApprovalRepository.updateOrCreate(anyCollection())).willReturn(true);
 
         //When
         final boolean result = mongoApprovalStore.addApprovals(approvals);
@@ -58,7 +54,7 @@ public class MongoApprovalStoreTest {
         final List<Approval> approvals = list(ofApproval()).next();
 
         //And
-        given(mongoApprovalRepository.updateOrCreate(anyCollectionOf(MongoApproval.class))).willReturn(false);
+        given(mongoApprovalRepository.updateOrCreate(anyCollection())).willReturn(false);
 
         //When
         final boolean result = mongoApprovalStore.addApprovals(approvals);

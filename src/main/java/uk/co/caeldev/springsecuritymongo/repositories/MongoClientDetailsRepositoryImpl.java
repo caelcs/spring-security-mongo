@@ -1,6 +1,7 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.mongodb.WriteResult;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,8 +25,8 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
     @Override
     public boolean deleteByClientId(String clientId) {
         final Query query = Query.query(Criteria.where(ID).is(clientId));
-        final WriteResult writeResult = mongoTemplate.remove(query, MongoClientDetails.class);
-        return writeResult.getN() == 1;
+        final DeleteResult deleteResult = mongoTemplate.remove(query, MongoClientDetails.class);
+        return deleteResult.wasAcknowledged();
     }
 
     @Override
@@ -42,9 +43,9 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
                 .set("autoApproveScopes", mongoClientDetails.getAutoApproveScopes())
                 .set("registeredRedirectUris", mongoClientDetails.getRegisteredRedirectUri());
 
-        final WriteResult writeResult = mongoTemplate.updateFirst(query, update, MongoClientDetails.class);
+        final UpdateResult updateResult = mongoTemplate.updateFirst(query, update, MongoClientDetails.class);
 
-        return writeResult.getN() == 1;
+        return updateResult.wasAcknowledged();
     }
 
     @Override
@@ -54,9 +55,9 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
 
         final Update update = Update.update(CLIENT_SECRET, newSecret);
 
-        final WriteResult writeResult = mongoTemplate.updateFirst(query, update, MongoClientDetails.class);
+        final UpdateResult updateResult = mongoTemplate.updateFirst(query, update, MongoClientDetails.class);
 
-        return writeResult.getN() == 1;
+        return updateResult.wasAcknowledged();
     }
 
     @Override

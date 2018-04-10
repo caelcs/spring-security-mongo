@@ -19,6 +19,7 @@ import uk.co.caeldev.springsecuritymongo.repositories.UserRepository;
 import uk.co.caeldev.springsecuritymongo.services.SecurityContextService;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Component
 public class MongoUserDetailsManager implements UserDetailsManager {
@@ -59,8 +60,7 @@ public class MongoUserDetailsManager implements UserDetailsManager {
 
     @Override
     public void deleteUser(final String username) {
-        final User user = userRepository.findOne(username);
-        userRepository.delete(user);
+        userRepository.deleteByUsername(username);
     }
 
     @Override
@@ -93,13 +93,16 @@ public class MongoUserDetailsManager implements UserDetailsManager {
 
     @Override
     public boolean userExists(final String username) {
-        final User user = userRepository.findOne(username);
-        return user != null;
+        return userRepository.findByUsername(username).isPresent();
     }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        return userRepository.findOne(username);
+        final Optional<User> byUsername = userRepository.findByUsername(username);
+        if (byUsername.isPresent()) {
+            return byUsername.get();
+        }
+        throw new UsernameNotFoundException("user does not exists.");
     }
 
     protected Authentication createNewAuthentication(final Authentication currentAuth) {

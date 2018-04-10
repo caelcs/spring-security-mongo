@@ -1,6 +1,7 @@
 package uk.co.caeldev.springsecuritymongo.config;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -11,15 +12,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.token.ClientKeyGenerator;
 import org.springframework.security.oauth2.client.token.DefaultClientKeyGenerator;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import uk.co.caeldev.springsecuritymongo.services.SecurityContextService;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 @Configuration
 @EnableConfigurationProperties(MongoSettings.class)
@@ -55,8 +56,19 @@ public class MongoConfiguration {
                     mongoSettings.getPassword().toCharArray());
 
             return new MongoClient(
-                    serverAddress, newArrayList(credential));
+                    serverAddress, credential, new MongoClientOptions.Builder().build());
         }
+    }
+
+    @Configuration
+    static class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Bean
+        @Override
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
+        }
+
     }
 
     @Configuration
@@ -74,7 +86,7 @@ public class MongoConfiguration {
 
         @Bean
         public PasswordEncoder passwordEncoder() {
-            return NoOpPasswordEncoder.getInstance();
+            return new BCryptPasswordEncoder();
         }
 
         @Bean
