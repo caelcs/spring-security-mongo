@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.co.caeldev.springsecuritymongo.builders.MongoOAuth2ClientTokenBuilder.mongoOAuth2ClientTokenBuilder;
 import static uk.co.caeldev.springsecuritymongo.builders.OAuth2AccessTokenBuilder.oAuth2AccessTokenBuilder;
 import static uk.co.caeldev.springsecuritymongo.builders.OAuth2ProtectedResourceDetailsBuilder.oAuth2ProtectedResourceDetailsBuilder;
@@ -66,12 +67,14 @@ public class MongoClientTokenServicesTest {
         final OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails = oAuth2ProtectedResourceDetailsBuilder().build();
         final TestingAuthenticationToken authentication = new TestingAuthenticationToken(userBuilder().build(), string().next());
 
+        //And
+        final String value = string().next();
+        when(keyGenerator.extractKey(oAuth2ProtectedResourceDetails, authentication)).thenReturn(value);
         //When
         mongoClientTokenServices.removeAccessToken(oAuth2ProtectedResourceDetails, authentication);
 
         //Then
-        verify(keyGenerator).extractKey(oAuth2ProtectedResourceDetails, authentication);
-        verify(mongoOAuth2ClientTokenRepository).deleteByAuthenticationId(anyString());
+        verify(mongoOAuth2ClientTokenRepository).deleteByAuthenticationId(value);
     }
 
     @Test

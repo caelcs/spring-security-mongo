@@ -10,6 +10,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.caeldev.springsecuritymongo.builders.MongoClientDetailsBuilder;
+import uk.co.caeldev.springsecuritymongo.config.ApplicationConfiguration;
 import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsRepository;
 
@@ -18,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { ApplicationConfiguration.class })
 @ActiveProfiles("test")
 @DirtiesContext
 public class MongoClientDetailsServiceIntegrationTest {

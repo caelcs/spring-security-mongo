@@ -87,14 +87,11 @@ public class MongoUserDetailsManagerTest {
         final String username = string().next();
         final User user = UserBuilder.userBuilder().username(username).build();
 
-        // And
-        given(userRepository.findByUsername(username)).willReturn(Optional.of(user));
-
         // When
         mongoUserDetailsManager.deleteUser(username);
 
-        // Then
-        verify(userRepository).delete(user);
+        //Then
+        verify(userRepository).deleteByUsername(username);
     }
 
     @Test

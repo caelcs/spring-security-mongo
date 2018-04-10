@@ -24,6 +24,9 @@ targetCompatibility = 1.8
 repositories {
     jcenter()
     mavenCentral()
+    maven {
+        url "https://oss.jfrog.org/libs-snapshot/"
+    }
 }
 
 scmVersion {
@@ -137,8 +140,6 @@ dependencies {
     compile("com.google.guava:guava:${guavaVersion}")
     compile("com.fasterxml.jackson.core:jackson-databind")
     compile("joda-time:joda-time:${jodaTimeVersion}")
-
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.assertj:assertj-core:${assertjCoreVersion}")
