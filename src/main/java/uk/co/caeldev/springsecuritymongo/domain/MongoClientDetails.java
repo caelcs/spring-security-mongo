@@ -141,7 +141,6 @@ public class MongoClientDetails implements ClientDetails {
         }
         final MongoClientDetails other = (MongoClientDetails) obj;
         return Objects.equals(this.clientId, other.clientId)
-                && Objects.equals(this.clientSecret, other.clientSecret)
                 && Objects.equals(this.scope, other.scope)
                 && Objects.equals(this.resourceIds, other.resourceIds)
                 && Objects.equals(this.authorizedGrantTypes, other.authorizedGrantTypes)
