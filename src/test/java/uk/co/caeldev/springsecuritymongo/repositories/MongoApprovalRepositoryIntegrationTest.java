@@ -1,7 +1,7 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.lordofthejars.nosqlunit.mongodb.InMemoryMongoDb;
-import org.junit.ClassRule;
+import com.github.fakemongo.junit.FongoRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 
 import java.util.List;
 
-import static com.lordofthejars.nosqlunit.mongodb.InMemoryMongoDb.InMemoryMongoRuleBuilder.newInMemoryMongoDbRule;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.org.fyodor.generators.RDG.string;
 
@@ -25,8 +24,8 @@ import static uk.org.fyodor.generators.RDG.string;
 @DirtiesContext
 public class MongoApprovalRepositoryIntegrationTest {
 
-    @ClassRule
-    public static InMemoryMongoDb inMemoryMongoDb = newInMemoryMongoDbRule().build();
+    @Rule
+    public FongoRule fongoRule = new FongoRule();
 
     @Autowired
     private MongoApprovalRepository mongoApprovalRepository;

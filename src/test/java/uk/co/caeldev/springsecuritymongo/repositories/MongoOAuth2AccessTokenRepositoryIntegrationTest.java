@@ -1,8 +1,8 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
+import com.github.fakemongo.junit.FongoRule;
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
-import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.caeldev.springsecuritymongo.config.ApplicationConfiguration;
 
-import static com.lordofthejars.nosqlunit.mongodb.MongoDbRule.MongoDbRuleBuilder.newMongoDbRule;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -24,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MongoOAuth2AccessTokenRepositoryIntegrationTest {
 
     @Rule
-    public MongoDbRule mongoDbRule = newMongoDbRule().defaultSpringMongoDb("copyshare");
+    public FongoRule fongoRule = new FongoRule();
 
     @Autowired
     private ApplicationContext applicationContext;
