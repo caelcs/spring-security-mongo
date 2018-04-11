@@ -43,7 +43,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test
-    public void shouldCreateUser() throws Exception {
+    public void shouldCreateUser() {
         // Given
         final User user = UserBuilder.userBuilder().build();
 
@@ -55,7 +55,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateUserWhenUsernameIsEmpty() throws Exception {
+    public void shouldNotCreateUserWhenUsernameIsEmpty() {
         // Given
         final User user = UserBuilder.userBuilder().username("").build();
 
@@ -64,7 +64,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateUserWhenUsernameIsValidAndNoAuthorities() throws Exception {
+    public void shouldNotCreateUserWhenUsernameIsValidAndNoAuthorities() {
         // Given
         final User user = UserBuilder.userBuilder().authorities(null).build();
 
@@ -73,7 +73,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateUserWhenUsernameIsValidAndAuthoritiesNotValid() throws Exception {
+    public void shouldNotCreateUserWhenUsernameIsValidAndAuthoritiesNotValid() {
         // Given
         final User user = UserBuilder.userBuilder().authorities(SecurityRDG.set(SecurityRDG.ofInvalidAuthority()).next()).build();
 
@@ -82,7 +82,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test
-    public void shouldDeleteUser() throws Exception {
+    public void shouldDeleteUser() {
         // Given
         final String username = string().next();
         final User user = UserBuilder.userBuilder().username(username).build();
@@ -95,7 +95,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test
-    public void shouldUpdateUser() throws Exception {
+    public void shouldUpdateUser() {
         // Given
         final User user = UserBuilder.userBuilder().build();
 
@@ -107,7 +107,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotUpdateUserWhenUsernameIsInvalid() throws Exception {
+    public void shouldNotUpdateUserWhenUsernameIsInvalid() {
         // Given
         final User user = UserBuilder.userBuilder().username("").build();
 
@@ -116,7 +116,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotUpdateUserWhenUsernameIsValidAndNoAuthorities() throws Exception {
+    public void shouldNotUpdateUserWhenUsernameIsValidAndNoAuthorities() {
         // Given
         final User user = UserBuilder.userBuilder().authorities(null).build();
 
@@ -125,7 +125,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotUpdateUserWhenUsernameIsValidAndAuthoritiesNotValid() throws Exception {
+    public void shouldNotUpdateUserWhenUsernameIsValidAndAuthoritiesNotValid() {
         // Given
         final User user = UserBuilder.userBuilder().authorities(SecurityRDG.set(SecurityRDG.ofInvalidAuthority()).next()).build();
 
@@ -134,7 +134,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenUserExists() throws Exception {
+    public void shouldReturnTrueWhenUserExists() {
         // Given
         final String username = string().next();
         final User user = UserBuilder.userBuilder().username(username).build();
@@ -150,7 +150,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenUserDoesNotExists() throws Exception {
+    public void shouldReturnFalseWhenUserDoesNotExists() {
         // Given
         final String username = string().next();
 
@@ -165,7 +165,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test
-    public void shouldLoadUserByUsernameWhenUserExists() throws Exception {
+    public void shouldLoadUserByUsernameWhenUserExists() {
         // Given
         final String username = string().next();
 
@@ -181,7 +181,7 @@ public class MongoUserDetailsManagerTest {
     }
 
     @Test
-    public void shouldChangePasswordForExitingUser() throws Exception {
+    public void shouldChangePasswordForExitingUser() {
         // Given
         final String username = string().next();
         final String currentPassword = string().next();

@@ -33,7 +33,7 @@ public class MongoOAuth2AccessTokenRepositoryIntegrationTest {
 
     @Test
     @UsingDataSet(locations = {"/samples/mongoAccessTokens.json"}, loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
-    public void shouldDeleteTokenByRefreshToken() throws Exception {
+    public void shouldDeleteTokenByRefreshToken() {
         //Given
         String tokenId = "49d855f31931b6063aa9e315e092f17f";
 
@@ -46,7 +46,7 @@ public class MongoOAuth2AccessTokenRepositoryIntegrationTest {
 
     @Test
     @UsingDataSet(locations = {"/samples/mongoAccessTokens.json"}, loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
-    public void shouldDeleteTokenById() throws Exception {
+    public void shouldDeleteTokenById() {
         //Given
         String tokenId = "49d855f31931b6063aa9e315e092f17f";
 

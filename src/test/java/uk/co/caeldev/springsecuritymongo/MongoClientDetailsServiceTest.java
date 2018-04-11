@@ -49,7 +49,7 @@ public class MongoClientDetailsServiceTest {
     }
 
     @Test
-    public void shouldRemoveClientDetailsWithValidClientId() throws Exception {
+    public void shouldRemoveClientDetailsWithValidClientId() {
         //Given
         final String clientId = string().next();
 
@@ -61,7 +61,7 @@ public class MongoClientDetailsServiceTest {
     }
 
     @Test(expected = NoSuchClientException.class)
-    public void shouldThrowsExceptionWhenTryToRemoveClientDetailsWithInvalidClientId() throws Exception {
+    public void shouldThrowsExceptionWhenTryToRemoveClientDetailsWithInvalidClientId() {
         //Given
         final String clientId = string().next();
 

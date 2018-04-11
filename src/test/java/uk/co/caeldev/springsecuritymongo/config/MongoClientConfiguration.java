@@ -15,7 +15,7 @@ import java.io.IOException;
 public class MongoClientConfiguration {
 
     @Bean
-    public MongoClient mongoClient(MongoSettings mongoSettings) throws IOException {
+    public MongoClient mongoClient(MongoSettings mongoSettings) {
         Fongo fongo = new Fongo(mongoSettings.getDatabase());
         return fongo.getMongo();
     }

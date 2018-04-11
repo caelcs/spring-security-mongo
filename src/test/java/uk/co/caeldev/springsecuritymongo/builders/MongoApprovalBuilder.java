@@ -16,7 +16,7 @@ public class MongoApprovalBuilder {
     private String scope = string().next();
     private Approval.ApprovalStatus status = value(Approval.ApprovalStatus.class).next();
     private LocalDateTime expiresAt = localDateTime().next();
-    private LocalDateTime lastUpdatedAt = localDateTime().next();;
+    private LocalDateTime lastUpdatedAt = localDateTime().next();
 
     private MongoApprovalBuilder() {
     }

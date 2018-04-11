@@ -31,7 +31,7 @@ public class MongoClientDetailsServiceIntegrationTest {
     private MongoClientDetailsRepository mongoClientDetailsRepository;
 
     @Test
-    public void shouldPersistClientDetailsSuccessfully() throws Exception {
+    public void shouldPersistClientDetailsSuccessfully() {
         //Given
         final MongoClientDetails clientDetails = MongoClientDetailsBuilder.mongoClientDetailsBuilder().build();
 
@@ -45,7 +45,7 @@ public class MongoClientDetailsServiceIntegrationTest {
     }
 
     @Test
-    public void shouldLoadClientDetailsByIdSuccessfully() throws Exception {
+    public void shouldLoadClientDetailsByIdSuccessfully() {
         //Given
         final MongoClientDetails clientDetails = MongoClientDetailsBuilder.mongoClientDetailsBuilder().build();
 
@@ -61,7 +61,7 @@ public class MongoClientDetailsServiceIntegrationTest {
     }
 
     @Test
-    public void shouldGetListOfClientDetailsByIdSuccessfully() throws Exception {
+    public void shouldGetListOfClientDetailsByIdSuccessfully() {
         //Given
         final MongoClientDetails clientDetails = MongoClientDetailsBuilder.mongoClientDetailsBuilder().build();
 

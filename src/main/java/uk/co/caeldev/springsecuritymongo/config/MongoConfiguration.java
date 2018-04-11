@@ -30,7 +30,7 @@ public class MongoConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate(final MongoClient mongoClient,
-                                       final MongoSettings mongoSettings) throws Exception {
+                                       final MongoSettings mongoSettings) {
         return new MongoTemplate(mongoClient, mongoSettings.getDatabase());
     }
 
@@ -46,7 +46,7 @@ public class MongoConfiguration {
     static class MongoClientConfiguration {
 
         @Bean
-        public MongoClient mongoClient(final MongoSettings mongoSettings) throws Exception {
+        public MongoClient mongoClient(final MongoSettings mongoSettings) {
             ServerAddress serverAddress = new ServerAddress(
                     mongoSettings.getHost(), mongoSettings.getPort());
 
