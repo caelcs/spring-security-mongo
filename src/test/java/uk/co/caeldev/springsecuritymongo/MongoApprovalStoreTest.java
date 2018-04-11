@@ -1,6 +1,5 @@
 package uk.co.caeldev.springsecuritymongo;
 
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,11 +9,13 @@ import org.springframework.security.oauth2.provider.approval.Approval;
 import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoApprovalRepository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -79,7 +80,7 @@ public class MongoApprovalStoreTest {
 
         //Then
         assertThat(result).isTrue();
-        verify(mongoApprovalRepository, never()).updateExpiresAt(any(LocalDate.class), any(MongoApproval.class));
+        verify(mongoApprovalRepository, never()).updateExpiresAt(any(LocalDateTime.class), any(MongoApproval.class));
     }
 
     @Test
@@ -91,7 +92,7 @@ public class MongoApprovalStoreTest {
         mongoApprovalStore.setHandleRevocationsAsExpiry(true);
 
         //And
-        given(mongoApprovalRepository.updateExpiresAt(any(LocalDate.class), any(MongoApproval.class))).willReturn(true);
+        given(mongoApprovalRepository.updateExpiresAt(any(LocalDateTime.class), any(MongoApproval.class))).willReturn(true);
 
         //When
         final boolean result = mongoApprovalStore.revokeApprovals(approvals);

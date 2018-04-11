@@ -131,13 +131,10 @@ dependencies {
     implementation "org.springframework.security.oauth:spring-security-oauth2:${springOAuth2Version}"
     implementation "com.google.guava:guava:${guavaVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind"
-    implementation "joda-time:joda-time:${jodaTimeVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
     testImplementation "uk.org.fyodor:fyodor-core:${fyodorVersion}"
-    testImplementation "uk.org.fyodor:fyodor-junit:${fyodorVersion}"
-    testImplementation "uk.org.fyodor:fyodor-jodatime:${fyodorVersion}"
     testImplementation "com.github.fakemongo:fongo:${fongoVersion}"
     testImplementation "com.lordofthejars:nosqlunit-mongodb:${nosqlunitMongodbVersion}"
     testImplementation "com.jayway.jsonpath:json-path:${jsonPathVersion}"

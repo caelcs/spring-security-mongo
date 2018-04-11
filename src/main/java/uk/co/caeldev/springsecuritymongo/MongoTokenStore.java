@@ -185,21 +185,11 @@ public class MongoTokenStore implements TokenStore {
     }
 
     private Predicate<MongoOAuth2AccessToken> byNotNulls() {
-        return new Predicate<MongoOAuth2AccessToken>() {
-            @Override
-            public boolean apply(final MongoOAuth2AccessToken token) {
-                return token != null;
-            }
-        };
+        return token -> token != null;
     }
 
     private Function<MongoOAuth2AccessToken, OAuth2AccessToken> toOAuth2AccessToken() {
-        return new Function<MongoOAuth2AccessToken, OAuth2AccessToken>() {
-            @Override
-            public OAuth2AccessToken apply(MongoOAuth2AccessToken token) {
-                return SerializationUtils.deserialize(token.getToken());
-            }
-        };
+        return token -> SerializationUtils.deserialize(token.getToken());
     }
 
     @Override

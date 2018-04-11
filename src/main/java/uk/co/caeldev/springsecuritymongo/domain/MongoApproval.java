@@ -1,11 +1,11 @@
 package uk.co.caeldev.springsecuritymongo.domain;
 
-import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.provider.approval.Approval.ApprovalStatus;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Document
@@ -17,8 +17,8 @@ public class MongoApproval {
     private String clientId;
     private String scope;
     private ApprovalStatus status;
-    private LocalDate expiresAt;
-    private LocalDate lastUpdatedAt;
+    private LocalDateTime expiresAt;
+    private LocalDateTime lastUpdatedAt;
 
     public MongoApproval() {
     }
@@ -29,8 +29,8 @@ public class MongoApproval {
                          final String clientId,
                          final String scope,
                          final ApprovalStatus status,
-                         final LocalDate expiresAt,
-                         final LocalDate lastUpdatedAt) {
+                         final LocalDateTime expiresAt,
+                         final LocalDateTime lastUpdatedAt) {
         this.id = id;
         this.userId = userId;
         this.clientId = clientId;
@@ -60,11 +60,11 @@ public class MongoApproval {
         return status;
     }
 
-    public LocalDate getExpiresAt() {
+    public LocalDateTime getExpiresAt() {
         return expiresAt;
     }
 
-    public LocalDate getLastUpdatedAt() {
+    public LocalDateTime getLastUpdatedAt() {
         return lastUpdatedAt;
     }
 

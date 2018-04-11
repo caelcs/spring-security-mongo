@@ -105,20 +105,10 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     }
 
     private Predicate<String> ByAutoApproveOfScope(final ClientDetails clientDetails) {
-        return new Predicate<String>() {
-            @Override
-            public boolean apply(final String scope) {
-                return clientDetails.isAutoApprove(scope);
-            }
-        };
+        return scope -> clientDetails.isAutoApprove(scope);
     }
 
     private Function<MongoClientDetails, ClientDetails> toClientDetails() {
-        return new Function<MongoClientDetails, ClientDetails>() {
-            @Override
-            public ClientDetails apply(MongoClientDetails input) {
-                return input;
-            }
-        };
+        return input -> input;
     }
 }

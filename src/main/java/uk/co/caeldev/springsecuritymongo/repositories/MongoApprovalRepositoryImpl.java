@@ -2,13 +2,13 @@ package uk.co.caeldev.springsecuritymongo.repositories;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import org.joda.time.LocalDate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class MongoApprovalRepositoryImpl implements MongoApprovalRepositoryBase 
     }
 
     @Override
-    public boolean updateExpiresAt(final LocalDate expiresAt,
+    public boolean updateExpiresAt(final LocalDateTime expiresAt,
                                    final MongoApproval mongoApproval) {
         final Update update = Update.update("expiresAt", expiresAt);
 

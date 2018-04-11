@@ -1,18 +1,21 @@
 package uk.co.caeldev.springsecuritymongo;
 
 import com.google.common.base.Function;
-import org.joda.time.LocalDate;
 import org.springframework.security.oauth2.provider.approval.Approval;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.stereotype.Component;
 import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoApprovalRepository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import static com.google.common.collect.Collections2.transform;
+import static uk.co.caeldev.springsecuritymongo.util.LocalDateTimeUtil.convertTolocalDateTimeFrom;
 
 @Component
 public class MongoApprovalStore implements ApprovalStore {
@@ -40,7 +43,7 @@ public class MongoApprovalStore implements ApprovalStore {
 
         for (final MongoApproval mongoApproval : mongoApprovals) {
             if (handleRevocationsAsExpiry) {
-                final boolean updateResult = mongoApprovalRepository.updateExpiresAt(LocalDate.now(), mongoApproval);
+                final boolean updateResult = mongoApprovalRepository.updateExpiresAt(LocalDateTime.now(), mongoApproval);
                 if (!updateResult) {
                     success = false;
                 }
@@ -65,32 +68,22 @@ public class MongoApprovalStore implements ApprovalStore {
     }
 
     private Function<Approval, MongoApproval> toMongoApproval() {
-        return new Function<Approval, MongoApproval>() {
-            @Override
-            public MongoApproval apply(final Approval approval) {
-                return new MongoApproval(UUID.randomUUID().toString(),
-                        approval.getUserId(),
-                        approval.getClientId(),
-                        approval.getScope(),
-                        approval.getStatus() == null ? Approval.ApprovalStatus.APPROVED: approval.getStatus(),
-                        LocalDate.fromDateFields(approval.getExpiresAt()),
-                        LocalDate.fromDateFields(approval.getLastUpdatedAt()));
-            }
-        };
+        return approval -> new MongoApproval(UUID.randomUUID().toString(),
+                approval.getUserId(),
+                approval.getClientId(),
+                approval.getScope(),
+                approval.getStatus() == null ? Approval.ApprovalStatus.APPROVED: approval.getStatus(),
+                convertTolocalDateTimeFrom(approval.getExpiresAt()),
+                convertTolocalDateTimeFrom(approval.getLastUpdatedAt()));
     }
 
     private Function<MongoApproval, Approval> toApproval() {
-        return new Function<MongoApproval, Approval>() {
-            @Override
-            public Approval apply(final MongoApproval mongoApproval) {
-                return new Approval(mongoApproval.getUserId(),
-                        mongoApproval.getClientId(),
-                        mongoApproval.getScope(),
-                        mongoApproval.getExpiresAt().toDate(),
-                        mongoApproval.getStatus(),
-                        mongoApproval.getLastUpdatedAt().toDate());
-            }
-        };
+        return mongoApproval -> new Approval(mongoApproval.getUserId(),
+                mongoApproval.getClientId(),
+                mongoApproval.getScope(),
+                Date.from(mongoApproval.getExpiresAt().atZone(ZoneId.systemDefault()).toInstant()),
+                mongoApproval.getStatus(),
+                Date.from(mongoApproval.getLastUpdatedAt().atZone(ZoneId.systemDefault()).toInstant()));
     }
 
     public void setHandleRevocationsAsExpiry(boolean handleRevocationsAsExpiry) {
