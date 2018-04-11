@@ -2,7 +2,6 @@ package uk.co.caeldev.springsecuritymongo.repositories;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,7 +16,6 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
     public static final String CLIENT_SECRET = "clientSecret";
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
     public MongoClientDetailsRepositoryImpl(final MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }

@@ -5,18 +5,15 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("pl.allegro.tech.build:axion-release-plugin:${axionReleasePluginVersion}")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
 apply plugin: 'signing'
 apply plugin: 'maven'
 apply plugin: 'pl.allegro.tech.build.axion-release'
-apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -127,28 +124,23 @@ uploadArchives {
     }
 }
 
-configurations {
-    providedRuntime
-}
-
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.boot:spring-boot-starter-aop")
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.security.oauth:spring-security-oauth2:${springOAuth2Version}")
-    compile("com.google.guava:guava:${guavaVersion}")
-    compile("com.fasterxml.jackson.core:jackson-databind")
-    compile("joda-time:joda-time:${jodaTimeVersion}")
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}"
+    implementation "org.springframework.security.oauth:spring-security-oauth2:${springOAuth2Version}"
+    implementation "com.google.guava:guava:${guavaVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "joda-time:joda-time:${jodaTimeVersion}"
 
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile("org.assertj:assertj-core:${assertjCoreVersion}")
-    testCompile("uk.org.fyodor:fyodor-core:${fyodorVersion}")
-    testCompile("uk.org.fyodor:fyodor-junit:${fyodorVersion}")
-    testCompile("uk.org.fyodor:fyodor-jodatime:${fyodorVersion}")
-    testCompile("com.github.fakemongo:fongo:${fongoVersion}")
-    testCompile("com.lordofthejars:nosqlunit-mongodb:${nosqlunitMongodbVersion}")
-    testCompile("com.jayway.jsonpath:json-path:${jsonPathVersion}")
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"
+    testImplementation "uk.org.fyodor:fyodor-core:${fyodorVersion}"
+    testImplementation "uk.org.fyodor:fyodor-junit:${fyodorVersion}"
+    testImplementation "uk.org.fyodor:fyodor-jodatime:${fyodorVersion}"
+    testImplementation "com.github.fakemongo:fongo:${fongoVersion}"
+    testImplementation "com.lordofthejars:nosqlunit-mongodb:${nosqlunitMongodbVersion}"
+    testImplementation "com.jayway.jsonpath:json-path:${jsonPathVersion}"
 }
 
 task wrapper(type: Wrapper) {

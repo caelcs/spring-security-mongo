@@ -1,7 +1,6 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
 import com.mongodb.client.result.DeleteResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,7 +15,6 @@ public class MongoOAuth2AccessTokenRepositoryImpl implements MongoOAuth2AccessTo
     public static final String ID = "_id";
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
     public MongoOAuth2AccessTokenRepositoryImpl(final MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }

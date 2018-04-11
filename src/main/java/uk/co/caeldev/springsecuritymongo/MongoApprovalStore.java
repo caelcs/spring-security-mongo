@@ -2,7 +2,6 @@ package uk.co.caeldev.springsecuritymongo;
 
 import com.google.common.base.Function;
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.approval.Approval;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,6 @@ public class MongoApprovalStore implements ApprovalStore {
 
     private boolean handleRevocationsAsExpiry = false;
 
-    @Autowired
     public MongoApprovalStore(final MongoApprovalRepository mongoApprovalRepository) {
         this.mongoApprovalRepository = mongoApprovalRepository;
     }

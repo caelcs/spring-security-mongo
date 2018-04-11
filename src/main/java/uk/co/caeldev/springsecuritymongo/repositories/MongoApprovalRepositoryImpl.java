@@ -3,7 +3,6 @@ package uk.co.caeldev.springsecuritymongo.repositories;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -20,7 +19,6 @@ public class MongoApprovalRepositoryImpl implements MongoApprovalRepositoryBase 
 
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
     public MongoApprovalRepositoryImpl(final MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }

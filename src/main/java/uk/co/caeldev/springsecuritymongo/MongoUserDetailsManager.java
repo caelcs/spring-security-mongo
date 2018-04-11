@@ -31,8 +31,7 @@ public class MongoUserDetailsManager implements UserDetailsManager {
     private AuthenticationManager authenticationManager;
 
     private SecurityContextService securityContextService;
-    
-    @Autowired
+
     public MongoUserDetailsManager(final UserRepository userRepository,
                                    final SecurityContextService securityContextService,
                                    final AuthenticationManager authenticationManager) {

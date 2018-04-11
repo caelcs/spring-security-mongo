@@ -20,7 +20,6 @@ public class MongoClientTokenServices implements ClientTokenServices {
 
     private final ClientKeyGenerator clientKeyGenerator;
 
-    @Autowired
     public MongoClientTokenServices(final MongoOAuth2ClientTokenRepository mongoOAuth2ClientTokenRepository,
                                     final ClientKeyGenerator clientKeyGenerator) {
         this.mongoOAuth2ClientTokenRepository = mongoOAuth2ClientTokenRepository;

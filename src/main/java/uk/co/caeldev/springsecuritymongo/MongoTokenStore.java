@@ -2,7 +2,6 @@ package uk.co.caeldev.springsecuritymongo;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.common.util.SerializationUtils;
@@ -34,7 +33,6 @@ public class MongoTokenStore implements TokenStore {
 
     private final AuthenticationKeyGenerator authenticationKeyGenerator;
 
-    @Autowired
     public MongoTokenStore(final MongoOAuth2AccessTokenRepository mongoOAuth2AccessTokenRepository,
                            final MongoOAuth2RefreshTokenRepository mongoOAuth2RefreshTokenRepository,
                            final AuthenticationKeyGenerator authenticationKeyGenerator) {

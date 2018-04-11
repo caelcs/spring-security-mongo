@@ -3,7 +3,6 @@ package uk.co.caeldev.springsecuritymongo;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,6 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public MongoClientDetailsService(final MongoClientDetailsRepository mongoClientDetailsRepository,
                                      final PasswordEncoder passwordEncoder) {
         this.mongoClientDetailsRepository = mongoClientDetailsRepository;
