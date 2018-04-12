@@ -1,17 +1,16 @@
 package uk.co.caeldev.springsecuritymongo;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.common.util.SerializationUtils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import uk.co.caeldev.springsecuritymongo.builders.*;
 import uk.co.caeldev.springsecuritymongo.domain.MongoOAuth2AccessToken;
 import uk.co.caeldev.springsecuritymongo.domain.MongoOAuth2RefreshToken;
@@ -23,8 +22,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.*;
 
@@ -40,13 +37,8 @@ public class MongoTokenStoreTest {
     @Mock
     private AuthenticationKeyGenerator authenticationKeyGenerator;
 
-    private TokenStore tokenStore;
-
-    @Before
-    public void setup() {
-        tokenStore = new MongoTokenStore(mongoOAuth2AccessTokenRepository, mongoOAuth2RefreshTokenRepository, authenticationKeyGenerator);
-    }
-
+    @InjectMocks
+    private MongoTokenStore mongoTokenStore;
 
     @Test
     public void shouldStoreAccessToken() {
@@ -58,10 +50,11 @@ public class MongoTokenStoreTest {
         final OAuth2Authentication oAuth2Authentication = OAuth2AuthenticationBuilder.oAuth2AuthenticationBuilder().build();
 
         //And
-        given(mongoOAuth2AccessTokenRepository.findByTokenId(any(String.class))).willReturn(MongoOAuth2AccessTokenBuilder.mongoOAuth2AccessTokenBuilder().token(token).build());
+        given(mongoOAuth2AccessTokenRepository.findByTokenId(any(String.class)))
+                .willReturn(MongoOAuth2AccessTokenBuilder.mongoOAuth2AccessTokenBuilder().token(token).build());
 
         //When
-        tokenStore.storeAccessToken(auth2AccessToken, oAuth2Authentication);
+        mongoTokenStore.storeAccessToken(auth2AccessToken, oAuth2Authentication);
 
         //Then
         verify(mongoOAuth2AccessTokenRepository).deleteByTokenId(any(String.class));
@@ -84,7 +77,7 @@ public class MongoTokenStoreTest {
                         .build());
 
         //When
-        final OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(tokenValue);
+        final OAuth2AccessToken oAuth2AccessToken = mongoTokenStore.readAccessToken(tokenValue);
 
         //Then
         assertThat(oAuth2AccessToken.getValue()).isEqualTo(tokenValue);
@@ -100,7 +93,7 @@ public class MongoTokenStoreTest {
                 .willReturn(null);
 
         //When
-        final OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(tokenValue);
+        final OAuth2AccessToken oAuth2AccessToken = mongoTokenStore.readAccessToken(tokenValue);
 
         //Then
         assertThat(oAuth2AccessToken).isNull();
@@ -112,7 +105,7 @@ public class MongoTokenStoreTest {
         final OAuth2AccessToken oAuth2AccessToken = OAuth2AccessTokenBuilder.oAuth2AccessTokenBuilder().build();
 
         //When
-        tokenStore.removeAccessToken(oAuth2AccessToken);
+        mongoTokenStore.removeAccessToken(oAuth2AccessToken);
 
         //Then
         verify(mongoOAuth2AccessTokenRepository).deleteByTokenId(any(String.class));
@@ -130,7 +123,7 @@ public class MongoTokenStoreTest {
         final ArgumentCaptor<MongoOAuth2RefreshToken> argumentCaptor = ArgumentCaptor.forClass(MongoOAuth2RefreshToken.class);
 
         //When
-        tokenStore.storeRefreshToken(oAuth2RefreshToken, oAuth2Authentication);
+        mongoTokenStore.storeRefreshToken(oAuth2RefreshToken, oAuth2Authentication);
 
         //Then
         verify(mongoOAuth2RefreshTokenRepository).save(argumentCaptor.capture());
@@ -152,7 +145,7 @@ public class MongoTokenStoreTest {
                 .willReturn(MongoOAuth2RefreshTokenBuilder.mongoOAuth2RefreshTokenBuilder().token(oAuth2RefreshTokenSer).build());
 
         //When
-        final OAuth2RefreshToken result = tokenStore.readRefreshToken(tokenValue);
+        final OAuth2RefreshToken result = mongoTokenStore.readRefreshToken(tokenValue);
 
         //Then
         assertThat(result.getValue()).isEqualTo(oAuth2RefreshToken.getValue());
@@ -168,7 +161,7 @@ public class MongoTokenStoreTest {
                 .willReturn(null);
 
         //When
-        final OAuth2RefreshToken result = tokenStore.readRefreshToken(tokenValue);
+        final OAuth2RefreshToken result = mongoTokenStore.readRefreshToken(tokenValue);
 
         //Then
         assertThat(result).isNull();
@@ -189,7 +182,7 @@ public class MongoTokenStoreTest {
                         .authentication(authenticationSer)
                         .build());
         //When
-        final OAuth2Authentication oAuth2Authentication = tokenStore.readAuthenticationForRefreshToken(oAuth2RefreshToken);
+        final OAuth2Authentication oAuth2Authentication = mongoTokenStore.readAuthenticationForRefreshToken(oAuth2RefreshToken);
 
         //Then
         assertThat(oAuth2Authentication.getPrincipal()).isEqualTo(authentication.getPrincipal());
@@ -205,7 +198,7 @@ public class MongoTokenStoreTest {
         given(mongoOAuth2RefreshTokenRepository.findByTokenId(any(String.class)))
                 .willReturn(null);
         //When
-        final OAuth2Authentication oAuth2Authentication = tokenStore.readAuthenticationForRefreshToken(oAuth2RefreshToken);
+        final OAuth2Authentication oAuth2Authentication = mongoTokenStore.readAuthenticationForRefreshToken(oAuth2RefreshToken);
 
         //Then
         assertThat(oAuth2Authentication).isNull();
@@ -217,7 +210,7 @@ public class MongoTokenStoreTest {
         final OAuth2RefreshToken oAuth2RefreshToken = OAuth2RefreshTokenBuilder.oAuth2RefreshToken().build();
 
         //When
-        tokenStore.removeRefreshToken(oAuth2RefreshToken);
+        mongoTokenStore.removeRefreshToken(oAuth2RefreshToken);
 
         //Then
         verify(mongoOAuth2RefreshTokenRepository).deleteByTokenId(any(String.class));
@@ -229,7 +222,7 @@ public class MongoTokenStoreTest {
         final OAuth2RefreshToken oAuth2RefreshToken = OAuth2RefreshTokenBuilder.oAuth2RefreshToken().build();
 
         //When
-        tokenStore.removeAccessTokenUsingRefreshToken(oAuth2RefreshToken);
+        mongoTokenStore.removeAccessTokenUsingRefreshToken(oAuth2RefreshToken);
 
         //Then
         verify(mongoOAuth2AccessTokenRepository).deleteByRefreshTokenId(any(String.class));
@@ -242,7 +235,7 @@ public class MongoTokenStoreTest {
 
         //And
         final String value = string().next();
-        given(authenticationKeyGenerator.extractKey(oAuth2Authentication)).willReturn(value);
+        doReturn(value).doReturn(value).when(authenticationKeyGenerator).extractKey(any());
 
         //And
         final OAuth2AccessToken oAuth2AccessToken = OAuth2AccessTokenBuilder.oAuth2AccessTokenBuilder().build();
@@ -254,13 +247,11 @@ public class MongoTokenStoreTest {
                         .build());
 
         //And
-        given(authenticationKeyGenerator.extractKey(any(OAuth2Authentication.class))).willReturn(value);
-
-        //And
-        given(mongoOAuth2AccessTokenRepository.findByTokenId(anyString())).willReturn(MongoOAuth2AccessTokenBuilder.mongoOAuth2AccessTokenBuilder().build());
+        given(mongoOAuth2AccessTokenRepository.findByTokenId(any()))
+                .willReturn(MongoOAuth2AccessTokenBuilder.mongoOAuth2AccessTokenBuilder().build());
 
         //When
-        tokenStore.getAccessToken(oAuth2Authentication);
+        mongoTokenStore.getAccessToken(oAuth2Authentication);
 
         //Then
         verify(mongoOAuth2AccessTokenRepository, never()).deleteByTokenId(any(String.class));
@@ -281,7 +272,7 @@ public class MongoTokenStoreTest {
                 .willReturn(null);
 
         //When
-        tokenStore.getAccessToken(oAuth2Authentication);
+        mongoTokenStore.getAccessToken(oAuth2Authentication);
 
         //Then
         verify(mongoOAuth2AccessTokenRepository, never()).deleteByTokenId(any(String.class));
@@ -307,7 +298,7 @@ public class MongoTokenStoreTest {
         given(mongoOAuth2AccessTokenRepository.findByTokenId(anyString())).willReturn(MongoOAuth2AccessTokenBuilder.mongoOAuth2AccessTokenBuilder().build());
 
         //When
-        tokenStore.getAccessToken(oAuth2Authentication);
+        mongoTokenStore.getAccessToken(oAuth2Authentication);
 
         //Then
         verify(mongoOAuth2AccessTokenRepository, atLeastOnce()).deleteByTokenId(any(String.class));
@@ -325,7 +316,7 @@ public class MongoTokenStoreTest {
         given(mongoOAuth2AccessTokenRepository.findByUsernameAndClientId(username, clientId)).willReturn(expectedTokens);
 
         //When
-        final Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientIdAndUserName(clientId, username);
+        final Collection<OAuth2AccessToken> tokens = mongoTokenStore.findTokensByClientIdAndUserName(clientId, username);
 
         //Then
         assertThat(tokens).hasSize(expectedTokens.size());
@@ -341,7 +332,7 @@ public class MongoTokenStoreTest {
         given(mongoOAuth2AccessTokenRepository.findByClientId(clientId)).willReturn(expectedTokens);
 
         //When
-        final Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientId(clientId);
+        final Collection<OAuth2AccessToken> tokens = mongoTokenStore.findTokensByClientId(clientId);
 
         //Then
         assertThat(tokens).hasSize(expectedTokens.size());

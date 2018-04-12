@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.ClientKeyGenerator;
@@ -13,11 +13,9 @@ import uk.co.caeldev.springsecuritymongo.domain.MongoOAuth2ClientToken;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoOAuth2ClientTokenRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static uk.co.caeldev.springsecuritymongo.builders.MongoOAuth2ClientTokenBuilder.mongoOAuth2ClientTokenBuilder;
 import static uk.co.caeldev.springsecuritymongo.builders.OAuth2AccessTokenBuilder.oAuth2AccessTokenBuilder;
 import static uk.co.caeldev.springsecuritymongo.builders.OAuth2ProtectedResourceDetailsBuilder.oAuth2ProtectedResourceDetailsBuilder;
@@ -66,12 +64,14 @@ public class MongoClientTokenServicesTest {
         final OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails = oAuth2ProtectedResourceDetailsBuilder().build();
         final TestingAuthenticationToken authentication = new TestingAuthenticationToken(userBuilder().build(), string().next());
 
+        //And
+        final String value = string().next();
+        when(keyGenerator.extractKey(oAuth2ProtectedResourceDetails, authentication)).thenReturn(value);
         //When
         mongoClientTokenServices.removeAccessToken(oAuth2ProtectedResourceDetails, authentication);
 
         //Then
-        verify(keyGenerator).extractKey(oAuth2ProtectedResourceDetails, authentication);
-        verify(mongoOAuth2ClientTokenRepository).deleteByAuthenticationId(anyString());
+        verify(mongoOAuth2ClientTokenRepository).deleteByAuthenticationId(value);
     }
 
     @Test

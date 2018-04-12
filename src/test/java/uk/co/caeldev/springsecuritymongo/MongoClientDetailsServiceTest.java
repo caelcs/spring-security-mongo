@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
@@ -14,8 +14,8 @@ import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
 import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.string;
 
@@ -49,7 +49,7 @@ public class MongoClientDetailsServiceTest {
     }
 
     @Test
-    public void shouldRemoveClientDetailsWithValidClientId() throws Exception {
+    public void shouldRemoveClientDetailsWithValidClientId() {
         //Given
         final String clientId = string().next();
 
@@ -61,7 +61,7 @@ public class MongoClientDetailsServiceTest {
     }
 
     @Test(expected = NoSuchClientException.class)
-    public void shouldThrowsExceptionWhenTryToRemoveClientDetailsWithInvalidClientId() throws Exception {
+    public void shouldThrowsExceptionWhenTryToRemoveClientDetailsWithInvalidClientId() {
         //Given
         final String clientId = string().next();
 

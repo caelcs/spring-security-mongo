@@ -9,5 +9,5 @@ public interface MongoClientDetailsRepositoryBase {
 
     boolean updateClientSecret(String clientId, String newSecret);
 
-    MongoClientDetails findByClientId(String clientId) throws IllegalArgumentException;
+    MongoClientDetails findByClientId(String clientId);
 }

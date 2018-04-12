@@ -4,12 +4,11 @@ package uk.co.caeldev.springsecuritymongo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.caeldev.springsecuritymongo.builders.MongoClientDetailsBuilder;
 import uk.co.caeldev.springsecuritymongo.config.ApplicationConfiguration;
 import uk.co.caeldev.springsecuritymongo.domain.MongoClientDetails;
@@ -19,11 +18,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationConfiguration.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { ApplicationConfiguration.class })
 @ActiveProfiles("test")
 @DirtiesContext
-@WebAppConfiguration
 public class MongoClientDetailsServiceIntegrationTest {
 
     @Autowired
@@ -33,7 +31,7 @@ public class MongoClientDetailsServiceIntegrationTest {
     private MongoClientDetailsRepository mongoClientDetailsRepository;
 
     @Test
-    public void shouldPersistClientDetailsSuccessfully() throws Exception {
+    public void shouldPersistClientDetailsSuccessfully() {
         //Given
         final MongoClientDetails clientDetails = MongoClientDetailsBuilder.mongoClientDetailsBuilder().build();
 
@@ -47,7 +45,7 @@ public class MongoClientDetailsServiceIntegrationTest {
     }
 
     @Test
-    public void shouldLoadClientDetailsByIdSuccessfully() throws Exception {
+    public void shouldLoadClientDetailsByIdSuccessfully() {
         //Given
         final MongoClientDetails clientDetails = MongoClientDetailsBuilder.mongoClientDetailsBuilder().build();
 
@@ -63,7 +61,7 @@ public class MongoClientDetailsServiceIntegrationTest {
     }
 
     @Test
-    public void shouldGetListOfClientDetailsByIdSuccessfully() throws Exception {
+    public void shouldGetListOfClientDetailsByIdSuccessfully() {
         //Given
         final MongoClientDetails clientDetails = MongoClientDetailsBuilder.mongoClientDetailsBuilder().build();
 

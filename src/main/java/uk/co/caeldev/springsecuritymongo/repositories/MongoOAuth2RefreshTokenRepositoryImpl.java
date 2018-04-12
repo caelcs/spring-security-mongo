@@ -1,7 +1,6 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.mongodb.WriteResult;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -14,7 +13,6 @@ public class MongoOAuth2RefreshTokenRepositoryImpl implements MongoOAuth2Refresh
     public static final String ID = "_id";
     private MongoTemplate mongoTemplate;
 
-    @Autowired
     public MongoOAuth2RefreshTokenRepositoryImpl(final MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
@@ -28,7 +26,7 @@ public class MongoOAuth2RefreshTokenRepositoryImpl implements MongoOAuth2Refresh
     @Override
     public boolean deleteByTokenId(String tokenId) {
         final Query query = Query.query(Criteria.where(ID).is(tokenId));
-        final WriteResult removeResult = mongoTemplate.remove(query, MongoOAuth2RefreshToken.class);
-        return removeResult.getN() == 1;
+        final DeleteResult deleteResult = mongoTemplate.remove(query, MongoOAuth2RefreshToken.class);
+        return deleteResult.wasAcknowledged();
     }
 }

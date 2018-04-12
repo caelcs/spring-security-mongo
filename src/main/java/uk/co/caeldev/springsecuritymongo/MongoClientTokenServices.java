@@ -1,6 +1,5 @@
 package uk.co.caeldev.springsecuritymongo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.ClientKeyGenerator;
@@ -20,7 +19,6 @@ public class MongoClientTokenServices implements ClientTokenServices {
 
     private final ClientKeyGenerator clientKeyGenerator;
 
-    @Autowired
     public MongoClientTokenServices(final MongoOAuth2ClientTokenRepository mongoOAuth2ClientTokenRepository,
                                     final ClientKeyGenerator clientKeyGenerator) {
         this.mongoOAuth2ClientTokenRepository = mongoOAuth2ClientTokenRepository;

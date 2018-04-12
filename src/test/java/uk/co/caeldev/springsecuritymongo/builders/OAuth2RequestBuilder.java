@@ -12,15 +12,15 @@ import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.*;
 
 public class OAuth2RequestBuilder {
 
-    Map<String, String> requestParameters = map(string(), string()).next();
-    String clientId = string().next();
-    Collection<? extends GrantedAuthority> authorities = list(ofGrantedAuthority()).next();
-    boolean approved = bool().next();
-    Set<String> scope = set(string()).next();
-    Set<String> resourceIds = set(string()).next();
-    String redirectUri = string().next();
-    Set<String> responseTypes = set(string()).next();
-    Map<String, Serializable> extensionProperties = map(string(), serializableOf(longVal())).next();
+    private Map<String, String> requestParameters = map(string(), string()).next();
+    private String clientId = string().next();
+    private Collection<? extends GrantedAuthority> authorities = list(ofGrantedAuthority()).next();
+    private boolean approved = bool().next();
+    private Set<String> scope = set(string()).next();
+    private Set<String> resourceIds = set(string()).next();
+    private String redirectUri = string().next();
+    private Set<String> responseTypes = set(string()).next();
+    private Map<String, Serializable> extensionProperties = map(string(), serializableOf(longVal())).next();
 
     private OAuth2RequestBuilder() {
     }

@@ -1,9 +1,5 @@
 package uk.co.caeldev.springsecuritymongo;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.stereotype.Component;
@@ -12,9 +8,9 @@ import uk.co.caeldev.springsecuritymongo.repositories.MongoClientDetailsReposito
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newHashSet;
 
 @Component
@@ -24,7 +20,6 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public MongoClientDetailsService(final MongoClientDetailsRepository mongoClientDetailsRepository,
                                      final PasswordEncoder passwordEncoder) {
         this.mongoClientDetailsRepository = mongoClientDetailsRepository;
@@ -32,7 +27,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     }
 
     @Override
-    public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
+    public ClientDetails loadClientByClientId(final String clientId) {
         try {
             return mongoClientDetailsRepository.findByClientId(clientId);
         } catch (IllegalArgumentException e) {
@@ -41,7 +36,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     }
 
     @Override
-    public void addClientDetails(final ClientDetails clientDetails) throws ClientAlreadyExistsException {
+    public void addClientDetails(final ClientDetails clientDetails) {
         final MongoClientDetails mongoClientDetails = new MongoClientDetails(clientDetails.getClientId(),
                 passwordEncoder.encode(clientDetails.getClientSecret()),
                 clientDetails.getScope(),
@@ -58,7 +53,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     }
 
     @Override
-    public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
+    public void updateClientDetails(final ClientDetails clientDetails) {
         final MongoClientDetails mongoClientDetails = new MongoClientDetails(clientDetails.getClientId(),
                 clientDetails.getClientSecret(),
                 clientDetails.getScope(),
@@ -78,7 +73,8 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     }
 
     @Override
-    public void updateClientSecret(String clientId, String secret) throws NoSuchClientException {
+    public void updateClientSecret(final String clientId,
+                                   final String secret) {
         final boolean result = mongoClientDetailsRepository.updateClientSecret(clientId, passwordEncoder.encode(secret));
         if (!result) {
             throw new NoSuchClientException("No such client id");
@@ -86,7 +82,7 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
     }
 
     @Override
-    public void removeClientDetails(String clientId) throws NoSuchClientException {
+    public void removeClientDetails(String clientId) {
         final boolean result = mongoClientDetailsRepository.deleteByClientId(clientId);
         if (!result) {
             throw new NoSuchClientException("No such client id");
@@ -95,32 +91,17 @@ public class MongoClientDetailsService implements ClientDetailsService, ClientRe
 
     @Override
     public List<ClientDetails> listClientDetails() {
-        final List<MongoClientDetails> all = mongoClientDetailsRepository.findAll();
-        return FluentIterable.from(all).transform(toClientDetails()).toList();
+        final List<MongoClientDetails> allClientDetails = mongoClientDetailsRepository.findAll();
+        return newArrayList(allClientDetails);
     }
 
     private Set<String> getAutoApproveScopes(final ClientDetails clientDetails) {
         if (clientDetails.isAutoApprove("true")) {
             return newHashSet("true"); // all scopes autoapproved
         }
-        return filter(clientDetails.getScope(), ByAutoApproveOfScope(clientDetails));
-    }
 
-    private Predicate<String> ByAutoApproveOfScope(final ClientDetails clientDetails) {
-        return new Predicate<String>() {
-            @Override
-            public boolean apply(final String scope) {
-                return clientDetails.isAutoApprove(scope);
-            }
-        };
-    }
-
-    private Function<MongoClientDetails, ClientDetails> toClientDetails() {
-        return new Function<MongoClientDetails, ClientDetails>() {
-            @Override
-            public ClientDetails apply(MongoClientDetails input) {
-                return input;
-            }
-        };
+        return clientDetails.getScope().stream()
+                .filter(clientDetails::isAutoApprove)
+                .collect(Collectors.toSet());
     }
 }

@@ -1,13 +1,12 @@
 package uk.co.caeldev.springsecuritymongo.builders;
 
-import org.joda.time.LocalDate;
 import org.springframework.security.oauth2.provider.approval.Approval;
 import uk.co.caeldev.springsecuritymongo.domain.MongoApproval;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static uk.co.caeldev.springsecuritymongo.commons.SecurityRDG.*;
-import static uk.org.fyodor.jodatime.generators.RDG.localDate;
 
 public class MongoApprovalBuilder {
 
@@ -16,8 +15,8 @@ public class MongoApprovalBuilder {
     private String clientId = string().next();
     private String scope = string().next();
     private Approval.ApprovalStatus status = value(Approval.ApprovalStatus.class).next();
-    private LocalDate expiresAt = localDate().next();
-    private LocalDate lastUpdatedAt = localDate().next();
+    private LocalDateTime expiresAt = localDateTime().next();
+    private LocalDateTime lastUpdatedAt = localDateTime().next();
 
     private MongoApprovalBuilder() {
     }

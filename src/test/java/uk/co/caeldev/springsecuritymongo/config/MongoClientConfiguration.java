@@ -7,15 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.io.IOException;
-
 @Configuration
 @EnableConfigurationProperties(MongoSettings.class)
 @Profile("test")
 public class MongoClientConfiguration {
 
     @Bean
-    public MongoClient mongoClient(MongoSettings mongoSettings) throws IOException {
+    public MongoClient mongoClient(MongoSettings mongoSettings) {
         Fongo fongo = new Fongo(mongoSettings.getDatabase());
         return fongo.getMongo();
     }

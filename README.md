@@ -1,6 +1,7 @@
 #Spring Security Mongo
 
 [![Build Status](https://travis-ci.org/caelwinner/spring-security-mongo.svg?branch=master)](https://travis-ci.org/caelwinner/spring-security-mongo)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/77472a792f8b4a87bb868eb10b2ff704)](https://www.codacy.com/app/adolfoecs/spring-security-mongo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=caelwinner/spring-security-mongo&amp;utm_campaign=Badge_Grade)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/uk.co.caeldev/spring-security-mongo/badge.png?style=flat)](http://search.maven.org/#search|ga|1|g%3A%22uk.co.caeldev%22%20AND%20a%3A%22spring-security-mongo%22)
 
 Library to provide full implementation of all the repositories
@@ -17,6 +18,14 @@ and provider necessary to have all the security persisted in MongoDB.
 
 ### Step 1
 Add as dependency to your project and then use the beans in your Spring Oauth2 Configuration
+
+#### Note:
+
+Spring Boot 2.x and Oath2 library and Mongo Driver 3.6 has bring a lot of changes that are not backward compatible unless that you play around with dependencies.
+So I have updated all the dependencies to use the latest from version 3.0.0.
+ 
+Spring Boot 1.5.x -> use 2.0.0
+Spring Boot 2.x.x -> use 3.0.0
 
 ### Step 2
 Add this annotation to your configuration class:
