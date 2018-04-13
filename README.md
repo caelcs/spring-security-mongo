@@ -1,7 +1,8 @@
 #Spring Security Mongo
 
 [![Build Status](https://travis-ci.org/caelwinner/spring-security-mongo.svg?branch=master)](https://travis-ci.org/caelwinner/spring-security-mongo)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/77472a792f8b4a87bb868eb10b2ff704)](https://www.codacy.com/app/adolfoecs/spring-security-mongo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=caelwinner/spring-security-mongo&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b34c42a3d33d41049c27f34f39eff367)](https://www.codacy.com/app/adolfoecs/spring-security-mongo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=caelwinner/spring-security-mongo&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/b34c42a3d33d41049c27f34f39eff367)](https://www.codacy.com/app/adolfoecs/spring-security-mongo?utm_source=github.com&utm_medium=referral&utm_content=caelwinner/spring-security-mongo&utm_campaign=Badge_Coverage)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/uk.co.caeldev/spring-security-mongo/badge.png?style=flat)](http://search.maven.org/#search|ga|1|g%3A%22uk.co.caeldev%22%20AND%20a%3A%22spring-security-mongo%22)
 
 Library to provide full implementation of all the repositories
