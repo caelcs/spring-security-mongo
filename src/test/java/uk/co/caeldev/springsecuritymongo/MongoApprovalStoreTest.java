@@ -84,6 +84,25 @@ public class MongoApprovalStoreTest {
     }
 
     @Test
+    public void shouldReturnFalseWhenHandleRevocationsAsExpiryIsFalseAndThereIsNothingToDelete() {
+        //Given
+        final List<Approval> approvals = list(ofApproval()).next();
+
+        //And
+        mongoApprovalStore.setHandleRevocationsAsExpiry(false);
+
+        //And
+        given(mongoApprovalRepository.deleteByUserIdAndClientIdAndScope(any(MongoApproval.class))).willReturn(false);
+
+        //When
+        final boolean result = mongoApprovalStore.revokeApprovals(approvals);
+
+        //Then
+        assertThat(result).isFalse();
+        verify(mongoApprovalRepository, never()).updateExpiresAt(any(LocalDateTime.class), any(MongoApproval.class));
+    }
+
+    @Test
     public void shouldRevokeApprovalsByUpdateWhenHandleRevocationsAsExpiryIsTrue() {
         //Given
         final List<Approval> approvals = list(ofApproval()).next();
@@ -99,6 +118,25 @@ public class MongoApprovalStoreTest {
 
         //Then
         assertThat(result).isTrue();
+        verify(mongoApprovalRepository, never()).deleteByUserIdAndClientIdAndScope(any(MongoApproval.class));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenHandleRevocationsAsExpiryIsTrueAndThereIsNothingToDelete() {
+        //Given
+        final List<Approval> approvals = list(ofApproval()).next();
+
+        //And
+        mongoApprovalStore.setHandleRevocationsAsExpiry(true);
+
+        //And
+        given(mongoApprovalRepository.updateExpiresAt(any(LocalDateTime.class), any(MongoApproval.class))).willReturn(false);
+
+        //When
+        final boolean result = mongoApprovalStore.revokeApprovals(approvals);
+
+        //Then
+        assertThat(result).isFalse();
         verify(mongoApprovalRepository, never()).deleteByUserIdAndClientIdAndScope(any(MongoApproval.class));
     }
 

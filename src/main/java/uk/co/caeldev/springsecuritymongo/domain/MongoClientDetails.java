@@ -1,5 +1,8 @@
 package uk.co.caeldev.springsecuritymongo.domain;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -126,48 +129,59 @@ public class MongoClientDetails implements ClientDetails {
         return false;
     }
 
-
-
     @Override
-    public int hashCode() {
-        return Objects.hash(clientId, clientSecret, scope, resourceIds, authorizedGrantTypes, registeredRedirectUris, authorities, accessTokenValiditySeconds, refreshTokenValiditySeconds, additionalInformation, autoApproveScopes);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof MongoClientDetails)) return false;
+
+        MongoClientDetails that = (MongoClientDetails) o;
+
+        return new EqualsBuilder()
+                .append(clientId, that.clientId)
+                .append(scope, that.scope)
+                .append(resourceIds, that.resourceIds)
+                .append(authorizedGrantTypes, that.authorizedGrantTypes)
+                .append(registeredRedirectUris, that.registeredRedirectUris)
+                .append(authorities, that.authorities)
+                .append(accessTokenValiditySeconds, that.accessTokenValiditySeconds)
+                .append(refreshTokenValiditySeconds, that.refreshTokenValiditySeconds)
+                .append(additionalInformation, that.additionalInformation)
+                .append(autoApproveScopes, that.autoApproveScopes)
+                .isEquals();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final MongoClientDetails other = (MongoClientDetails) obj;
-        return Objects.equals(this.clientId, other.clientId)
-                && Objects.equals(this.scope, other.scope)
-                && Objects.equals(this.resourceIds, other.resourceIds)
-                && Objects.equals(this.authorizedGrantTypes, other.authorizedGrantTypes)
-                && Objects.equals(this.registeredRedirectUris, other.registeredRedirectUris)
-                && Objects.equals(this.authorities, other.authorities)
-                && Objects.equals(this.accessTokenValiditySeconds, other.accessTokenValiditySeconds)
-                && Objects.equals(this.refreshTokenValiditySeconds, other.refreshTokenValiditySeconds)
-                && Objects.equals(this.additionalInformation, other.additionalInformation)
-                && Objects.equals(this.autoApproveScopes, other.autoApproveScopes);
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(clientId)
+                .append(clientSecret)
+                .append(scope)
+                .append(resourceIds)
+                .append(authorizedGrantTypes)
+                .append(registeredRedirectUris)
+                .append(authorities)
+                .append(accessTokenValiditySeconds)
+                .append(refreshTokenValiditySeconds)
+                .append(additionalInformation)
+                .append(autoApproveScopes)
+                .toHashCode();
     }
 
     @Override
     public String toString() {
-        return "MongoClientDetails{" +
-                "clientId='" + clientId + '\'' +
-                ", clientSecret='" + clientSecret + '\'' +
-                ", scope=" + scope +
-                ", resourceIds=" + resourceIds +
-                ", authorizedGrantTypes=" + authorizedGrantTypes +
-                ", registeredRedirectUris=" + registeredRedirectUris +
-                ", authorities=" + authorities +
-                ", accessTokenValiditySeconds=" + accessTokenValiditySeconds +
-                ", refreshTokenValiditySeconds=" + refreshTokenValiditySeconds +
-                ", additionalInformation=" + additionalInformation +
-                ", autoApproveScopes=" + autoApproveScopes +
-                '}';
+        return new ToStringBuilder(this)
+                .append("clientId", clientId)
+                .append("clientSecret", clientSecret)
+                .append("scope", scope)
+                .append("resourceIds", resourceIds)
+                .append("authorizedGrantTypes", authorizedGrantTypes)
+                .append("registeredRedirectUris", registeredRedirectUris)
+                .append("authorities", authorities)
+                .append("accessTokenValiditySeconds", accessTokenValiditySeconds)
+                .append("refreshTokenValiditySeconds", refreshTokenValiditySeconds)
+                .append("additionalInformation", additionalInformation)
+                .append("autoApproveScopes", autoApproveScopes)
+                .toString();
     }
 }

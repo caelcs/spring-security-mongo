@@ -1,31 +1,17 @@
 package uk.co.caeldev.springsecuritymongo.repositories;
 
-import com.github.fakemongo.junit.FongoRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.caeldev.springsecuritymongo.builders.UserBuilder;
-import uk.co.caeldev.springsecuritymongo.config.ApplicationConfiguration;
 import uk.co.caeldev.springsecuritymongo.domain.User;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.org.fyodor.generators.RDG.string;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { ApplicationConfiguration.class })
-@ActiveProfiles("test")
-@DirtiesContext
-public class UserRepositoryIntegrationTest {
-
-    @Rule
-    public FongoRule fongoRule = new FongoRule();
+public class UserRepositoryIntegrationTest extends AbstractRepositoryIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -33,10 +19,10 @@ public class UserRepositoryIntegrationTest {
     @Test
     public void shouldSaveUser() {
         //Given
-        User user = UserBuilder.userBuilder().build();
+        final User user = UserBuilder.userBuilder().build();
 
         //When
-        User result = userRepository.save(user);
+        final User result = userRepository.save(user);
 
         //Then
         Optional<User> expectedUser = userRepository.findByUsername(user.getUsername());
@@ -46,7 +32,7 @@ public class UserRepositoryIntegrationTest {
     @Test
     public void shouldChangePasswordUser() {
         //Given
-        User user = UserBuilder.userBuilder().build();
+        final User user = UserBuilder.userBuilder().build();
         userRepository.save(user);
 
         //When
@@ -54,5 +40,33 @@ public class UserRepositoryIntegrationTest {
 
         //Then
         assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldFindUserByUsername() {
+        //Given
+        final User user = UserBuilder.userBuilder().build();
+        final User savedUser = userRepository.save(user);
+
+        //When
+        final Optional<User> userFound = userRepository.findByUsername(user.getUsername());
+
+        //Then
+        assertThat(userFound.isPresent()).isTrue();
+        assertThat(userFound.get()).isEqualTo(savedUser);
+    }
+
+    @Test
+    public void shouldDeleteUserByUsername() {
+        //Given
+        final User user = UserBuilder.userBuilder().build();
+        final User savedUser = userRepository.save(user);
+
+        //When
+        userRepository.deleteByUsername(savedUser.getUsername());
+
+        //Then
+        final List<User> all = userRepository.findAll();
+        assertThat(all).isEmpty();
     }
 }

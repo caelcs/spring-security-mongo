@@ -38,4 +38,9 @@ public class MongoApprovalBuilder {
         this.userId = userId;
         return this;
     }
+
+    public MongoApprovalBuilder scope(String scope) {
+        this.scope = scope;
+        return this;
+    }
 }

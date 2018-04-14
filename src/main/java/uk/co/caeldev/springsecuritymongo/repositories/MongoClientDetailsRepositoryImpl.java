@@ -59,7 +59,7 @@ public class MongoClientDetailsRepositoryImpl implements MongoClientDetailsRepos
     }
 
     @Override
-    public MongoClientDetails findByClientId(final String clientId) throws IllegalArgumentException {
+    public MongoClientDetails findByClientId(final String clientId) {
         final Query query = Query.query(Criteria.where(ID).is(clientId));
         final MongoClientDetails mongoClientDetails = mongoTemplate.findOne(query, MongoClientDetails.class);
         if (mongoClientDetails == null) {

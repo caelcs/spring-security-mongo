@@ -141,6 +141,8 @@ dependencies {
     implementation "org.springframework.security.oauth:spring-security-oauth2:${springOAuth2Version}"
     implementation "com.google.guava:guava:${guavaVersion}"
     implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "org.apache.commons:commons-lang3:3.7"
+
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testImplementation "org.assertj:assertj-core:${assertjCoreVersion}"

@@ -24,7 +24,7 @@ public class MongoOAuth2RefreshTokenRepositoryImpl implements MongoOAuth2Refresh
     }
 
     @Override
-    public boolean deleteByTokenId(String tokenId) {
+    public boolean deleteByTokenId(final String tokenId) {
         final Query query = Query.query(Criteria.where(ID).is(tokenId));
         final DeleteResult deleteResult = mongoTemplate.remove(query, MongoOAuth2RefreshToken.class);
         return deleteResult.wasAcknowledged();
