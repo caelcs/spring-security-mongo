@@ -1,8 +1,7 @@
 # Spring Security Mongo
 
-[![Build Status](https://travis-ci.org/caelwinner/spring-security-mongo.svg?branch=master)](https://travis-ci.org/caelwinner/spring-security-mongo)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b34c42a3d33d41049c27f34f39eff367)](https://www.codacy.com/app/adolfoecs/spring-security-mongo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=caelwinner/spring-security-mongo&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/b34c42a3d33d41049c27f34f39eff367)](https://www.codacy.com/app/adolfoecs/spring-security-mongo?utm_source=github.com&utm_medium=referral&utm_content=caelwinner/spring-security-mongo&utm_campaign=Badge_Coverage)
+[![Build Status](https://travis-ci.org/caelcs/spring-security-mongo.svg?branch=master)](https://travis-ci.org/caelcs/spring-security-mongo)
+[![Coverage Status](https://coveralls.io/repos/github/caelcs/spring-security-mongo/badge.svg)](https://coveralls.io/github/caelcs/spring-security-mongo)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/uk.co.caeldev/spring-security-mongo/badge.png?style=flat)](http://search.maven.org/#search|ga|1|g%3A%22uk.co.caeldev%22%20AND%20a%3A%22spring-security-mongo%22)
 
 Library to provide full implementation of all the repositories
@@ -16,9 +15,9 @@ and provider necessary to have all the security persisted in MongoDB.
 * ClientTokenServices
 
 ### Important
-The library does not proivdes the necessary config to use these services, you will have to do that for your self. On the other hand I have another library that you can use shows how to configure all the services and have up and running your oauth2 server.
+The library does not provides the necessary config to use these services, you will have to do that for your self. On the other hand I have another library that you can use shows how to configure all the services and have up and running your oauth2 server.
 
-https://github.com/caelwinner/base-auth2-server
+https://github.com/caelcs/base-auth2-server
 
 ## How to use it
 
@@ -46,6 +45,19 @@ public class MongoSecurityConfiguration {
 Having this annotation will define in your spring context all the necessary to use this library.
 
 ### Step 3
+Create in your mongo instance the user that you will use to access the database
+
+```json
+db.createUser(
+  {
+    user: "oauth2",
+    pwd: "testpass",
+    roles: [ { role: "readWrite", db: "invoicer" } ]
+  }
+)
+```
+
+### Step 4
 define the following properties in your app if you want to use the default Mongo client. 
 If you want to use your own version just DO NOT ADD these properties.
 

@@ -6,6 +6,7 @@ buildscript {
 
     dependencies {
         classpath("pl.allegro.tech.build:axion-release-plugin:${axionReleasePluginVersion}")
+        classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2"
     }
 }
 
@@ -15,6 +16,7 @@ apply plugin: 'signing'
 apply plugin: 'maven'
 apply plugin: 'pl.allegro.tech.build.axion-release'
 apply plugin: 'jacoco'
+apply plugin: "com.github.kt3k.coveralls"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -106,12 +108,12 @@ uploadArchives {
                 packaging "jar"
 
                 description "A Commons Library to provide the repositories for mongo db"
-                url "https://github.com/caelwinner/spring-security-mongo"
+                url "https://github.com/caelcs/spring-security-mongo"
 
                 scm {
-                    url "https://github.com/caelwinner/spring-security-mongo.git"
-                    connection "https://github.com/caelwinner/spring-security-mongo.git"
-                    developerConnection "https://github.com/caelwinner/spring-security-mongo.git"
+                    url "https://github.com/caelcs/spring-security-mongo.git"
+                    connection "https://github.com/caelcs/spring-security-mongo.git"
+                    developerConnection "https://github.com/caelcs/spring-security-mongo.git"
                 }
 
                 licenses {
@@ -124,7 +126,7 @@ uploadArchives {
 
                 developers {
                     developer {
-                        id "caelwinner"
+                        id "caelcs"
                         name "Adolfo Custidiano"
                         email "adolfoecs@gmail.com"
                     }
@@ -133,6 +135,15 @@ uploadArchives {
         }
     }
 }
+
+coveralls {
+    jacocoReportPath 'build/reports/jacoco/test/jacocoTestReport.xml'
+}
+
+tasks.coveralls {
+    dependsOn 'check'
+}
+
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
